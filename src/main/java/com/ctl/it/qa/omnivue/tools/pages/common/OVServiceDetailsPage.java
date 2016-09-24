@@ -6,13 +6,20 @@ import java.util.List;
 import org.openqa.selenium.By;
 
 import com.ctl.it.qa.omnivue.tools.pages.OmniVuePage;
+import com.ctl.it.qa.omnivue.tools.steps.user.UserSteps;
+import com.ctl.it.qa.staf.xml.reader.IntDataContainer;
 
+import junit.framework.Assert;
 import net.serenitybdd.core.annotations.findby.FindBy;
 import net.serenitybdd.core.pages.WebElementFacade;
+import net.thucydides.core.annotations.Step;
 
 public class OVServiceDetailsPage extends OmniVuePage {
 
 	OVCreateDevicePage devcreatepage;
+	OVActivationPage actvtnpage;
+	
+	
 	
 	@FindBy(id="NAME")
 	public WebElementFacade tbx_editDeviceName;
@@ -60,13 +67,51 @@ public class OVServiceDetailsPage extends OmniVuePage {
 	
 	@FindBy(xpath=".//*[@value='Add Contact']")
 	public WebElementFacade btn_addcontact;
+	
+	
+	//created by Dolly
+	@FindBy(xpath="(//div[label[contains(text(),'QOS Template Name')]]/following-sibling::div/label[1])[1]")
+	public WebElementFacade lbl_templateName;
+	
+	//created by Dolly
+	@FindBy(xpath="//thead[tr[th[text()='Subscriber Type']]]/following-sibling::tbody[1]/tr/td[2]")
+	public WebElementFacade lbl_SubscriberType;
+	
+	//created by Dolly
+	@FindBy(xpath="//thead[tr[th[text()='Serial Number']]]/following-sibling::tbody[1]/tr/td[2]")
+	public WebElementFacade lbl_SerialName;
+	
+	
+	//created by Dolly
+	@FindBy(xpath="//thead[tr[th[text()='Subscriber Name']]]/following-sibling::tbody[1]/tr/td[3]")
+	public WebElementFacade lbl_SubscriberName;
+	
+	//created by Dolly
+	@FindBy(xpath="//thead[tr[th[text()='Serial Number']]]/following-sibling::tbody[1]/tr/td[3]")
+	public WebElementFacade lbl_VendorPartName;
+	
 		
 	@FindBy(xpath="//*[contains(text(),'Create Contact')]")
 	public WebElementFacade createcontacttab;
 	
 	//End of Contact validation
 		
-		
+	//Bam Table validation ----- 21/7/2016
+	
+	@FindBy(xpath="//*[@jqx-create='createBamlog']")
+	public WebElementFacade lbl_bamtable;
+	
+	
+
+	
+	
+	//End of BAM table
+	
+	
+	
+	@FindBy(xpath=".//*[text()='No Associated Services to display']")
+	public WebElementFacade lbl_service_msg;
+	
 	@Override
 	public WebElementFacade getUniqueElementInPage() {
 		
@@ -142,6 +187,8 @@ public class OVServiceDetailsPage extends OmniVuePage {
 				
 			}
 		
+		
+		
 		public boolean Validation_Usabilites(String serviceType,String serviceCapabilityType1,String serviceCapabilityType2) throws InterruptedException {
 			int validation=0;
 			List<WebElementFacade> serviceList = devcreatepage.lbl_allServiceXapath;
@@ -175,4 +222,157 @@ public class OVServiceDetailsPage extends OmniVuePage {
 				return false;
 				}
 		}
+		
+		public void validate_servicetab(){
+			if(lbl_service_msg.isVisible())
+			{
+				System.out.println("No service is present");
+			}
+			else throw new Error("Service is prsent");
+			
+		}
+		
+		public void bam_log_validation(){	//I am validating Bam table is present or not
+			if(lbl_bamtable.isDisplayed()){
+				System.out.println("BAM Table is present");
+			}
+			else throw new Error("BAM Table is not Present");
+		}
+		
+		
+		
+		/**
+		 * @author Dolly
+		 * @param template
+		 * description Method used to validate List view should be displayed when search is performed
+		 */
+		public void validateViewList(String template){
+			try {
+				String sTemplateName = lbl_templateName.getText();
+				System.out.println("sTemplateName ="+sTemplateName);
+				UserSteps enduser = new UserSteps();
+				
+				IntDataContainer datacontainer = enduser.get_data_for_page(actvtnpage).getContainer(template);
+				String fieldValue = datacontainer.getFieldValue("tbx_templateName");
+				String FielsString[] = fieldValue.split(":");
+				String actualFieldvalue = FielsString[1];
+				System.out.println(actualFieldvalue);
+			if(sTemplateName.contains(actualFieldvalue)){
+				Thread.sleep(3000);
+				System.out.println("List view displayed when search is performed.");
+
+			}
+			else
+			{
+				System.out.println("List view not displayed when search is performed.");
+			}
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
+		
+		
+		/**
+		 * @author Dolly
+		 * @description Method used to validate the information in Device Detail Page after Edit done 
+		 */
+		public void validateDeviceDetail(String template){
+			try {
+				String sSubscriberType = lbl_SubscriberType.getText();
+				String sSubscriberName = lbl_SubscriberName.getText();
+				
+				System.out.println("sSubscriberType ="+sSubscriberType);
+				System.out.println("sSubscriberName ="+sSubscriberName);
+				UserSteps enduser = new UserSteps();
+				
+				IntDataContainer datacontainer = enduser.get_data_for_page(actvtnpage).getContainer(template).getContainer("SubscriberName");
+				String fieldValue = datacontainer.getFieldValue("ddl_SubscriberType");
+				String fieldValue1 = datacontainer.getFieldValue("tbx_Subscribername");
+				
+				System.out.println("fieldValue ="+fieldValue);
+				System.out.println("fieldValue1 ="+fieldValue1);
+				
+				String FielsString[] = fieldValue.split(":");
+				String actualSubscriberTypeFieldvalue = FielsString[1];
+				System.out.println("actualSubscriberTypeFieldvalue= "+actualSubscriberTypeFieldvalue);
+				
+				
+				String FielsString1[] = fieldValue1.split(":");
+				String actualSubscriberNameFieldvalue = FielsString1[1];
+				System.out.println("actualSubscriberNameFieldvalue= "+actualSubscriberNameFieldvalue);
+				
+				Boolean flag = sSubscriberType.equalsIgnoreCase(actualSubscriberTypeFieldvalue);
+				Assert.assertTrue("Subscriber Type is not same", flag);
+//				Assert.assertEquals("Subscriber Type is not same", sSubscriberType, actualSubscriberTypeFieldvalue);
+				System.out.println("Subscriber Type is same");
+				
+				
+				Boolean flag1 = sSubscriberName.equalsIgnoreCase(actualSubscriberNameFieldvalue);
+				Assert.assertTrue("Subscriber Name is not same", flag1);
+//				Assert.assertEquals("Subscriber Name is not same", sSubscriberName, actualSubscriberNameFieldvalue);
+				System.out.println("Subscriber Name is same");
+				
+			}
+			 catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			}
+		
+		
+		
+		
+		/**
+		 * @author Dolly
+		 * @param template
+		 * description Method used to validate the Networking Details after editing is done
+		 */
+		public void validateNetworkDetail(String template){
+			try {
+				String sSerialName = lbl_SerialName.getText();
+				String actualSerialName = sSerialName.trim();
+				System.out.println("actualSerialName= "+actualSerialName);
+				
+				String sVendorPartName = lbl_VendorPartName.getText();
+				String actualVendorPartName = sVendorPartName.trim();
+				System.out.println("actualVendorPartName= "+actualVendorPartName);
+				
+				System.out.println("sSerialName ="+sSerialName);
+				System.out.println("sVendorPartName ="+sVendorPartName);
+				UserSteps enduser = new UserSteps();
+				
+				IntDataContainer datacontainer = enduser.get_data_for_page(actvtnpage).getContainer(template);
+				String fieldValue = datacontainer.getFieldValue("tbx_serialNumber");
+				String fieldValue1 = datacontainer.getFieldValue("tbx_vendorPartNumber");
+				
+				System.out.println("fieldValue ="+fieldValue);
+				System.out.println("fieldValue1 ="+fieldValue1);
+				
+				String FielsString[] = fieldValue.split(":");
+				String expectSerialNameFieldvalue = FielsString[1];
+				System.out.println("actualSerialNameFieldvalue= "+expectSerialNameFieldvalue);
+				
+				
+				String FielsString1[] = fieldValue1.split(":");
+				String expectVendorPartNameFieldvalue = FielsString1[1];
+				System.out.println("actualVendorPartNameFieldvalue= "+expectVendorPartNameFieldvalue);
+				
+				Assert.assertEquals("Serial Name is not same", expectSerialNameFieldvalue, actualSerialName);
+				System.out.println("Serial Name is same");
+				
+				Assert.assertEquals("Vendor Part Name is not same", expectVendorPartNameFieldvalue, actualVendorPartName);
+				System.out.println("Vendor Part Name is same");
+				
+			}
+			 catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+				
+			}
+		
+		
+
 }

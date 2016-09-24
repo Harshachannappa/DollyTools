@@ -7,12 +7,38 @@ import org.openqa.selenium.By;
 
 import com.ctl.it.qa.omnivue.tools.pages.OmniVuePage;
 
+import junit.framework.Assert;
 import net.serenitybdd.core.annotations.findby.FindBy;
 import net.serenitybdd.core.pages.WebElementFacade;
 
 public class OVActivationPage extends OmniVuePage {
 	
 	OVCreateDevicePage devcreatepage;
+	
+	
+	
+	//Created By Dolly
+	@FindBy(xpath="//input[@value='Edit']")
+	public WebElementFacade click_Editbtn;
+	
+	//Created By Dolly
+	@FindBy(xpath="//input[@value='Edit Device Details']")
+	public WebElementFacade click_EditDeviceDetailbtn;
+	
+	//Created By Dolly
+	@FindBy(xpath=".//*[@id='mainTab']/div/ul/li[2]/a/tab-heading")
+	public WebElementFacade tab_mainTab;
+	
+	//Created By Dolly
+	//xpath="//div[label[text()='Serial Number']]/following-sibling::div[1]/div[2]/input"
+	@FindBy(xpath="(//div[@class='row form-group-device'][2])[2]/div[2]/input")
+	public WebElementFacade tbx_serialNumber;
+	
+	//Created By Dolly
+	//div[label[text()='Serial Number']]/following-sibling::div[1]/div[3]/input
+	@FindBy(xpath="(//div[@class='row form-group-device'][2])[2]/div[3]/input")
+	public WebElementFacade tbx_vendorPartNumber;
+	
 	
 	@FindBy(xpath=".//*[@id='basicsearch-out-div']/a")
 	public WebElementFacade tab_search;
@@ -42,6 +68,9 @@ public class OVActivationPage extends OmniVuePage {
 	@FindBy(xpath="//label[text()='Inventory Type']/following-sibling::select")
 	public WebElementFacade ddl_invntryType;
 	
+	@FindBy(xpath=".//label[text()='Port Type' and @class='control-label']/following-sibling::select")
+	public WebElementFacade ddl_portType;
+	
 	@FindBy(xpath=".//*[@ng-show='showInventoryType']/select")
 	public WebElementFacade ddl_CreateinvntryType;
 	
@@ -53,6 +82,14 @@ public class OVActivationPage extends OmniVuePage {
 	
 	@FindBy(xpath=".//*[@id='servicesrchname1']")
 	public WebElementFacade tbx_serviceName;
+	
+	@FindBy(xpath=".//*[@id='templateName']")
+	public WebElementFacade tbx_templateName;
+	
+	//Dolly- added service type xpath
+	@FindBy(xpath=".//*[@id='servicetype']")
+	public WebElementFacade ddl_serviceType;
+	
 	
 	//Order search Tabs
 		
@@ -77,6 +114,9 @@ public class OVActivationPage extends OmniVuePage {
 	@FindBy(xpath=".//*[@id='DTN ']")
 	public WebElementFacade tbx_dtnorder;
 	
+	@FindBy(xpath=".//*[@ng-show='showForGPON']/label[text()='Order Type']/following-sibling::select")
+	public WebElementFacade ddl_gponordertype;			//ONly for GPON order type
+	
 	//End of order search Tab
 	
 	//@FindBy(xpath=".//*[@id='basicsearch-out-div']/ng-include/div/div/div[2]/div[3]/ng-include/div/ng-include/div/div[1]/input")
@@ -96,6 +136,16 @@ public class OVActivationPage extends OmniVuePage {
 		public WebElementFacade btn_tasksearch;
 		
 		//End of Search button
+	
+	// Start of Location - Search Tab details		
+
+		@FindBy(xpath="//div[@ng-show='showLocationType']/select")
+		public WebElementFacade ddl_Locationtype;
+		
+		@FindBy(xpath="//button[@ng-click='create();']")
+		public WebElementFacade btn_Location_create;
+		
+	//End of Location Search Tab button
 	
 	@FindBy(xpath=".//*[@id='basicearch']/div[11]/ng-include/div/div[2]/div/div[2]/button")
 	public WebElementFacade btn_create;
@@ -170,6 +220,22 @@ public class OVActivationPage extends OmniVuePage {
 	@FindBy(id="port")
 	public WebElementFacade ddl_TopologyType;
 	
+	/**
+	 *@author Dolly
+	 *@description Subscriber type in subscriber look up page
+	 */
+	@FindBy(xpath="(.//*[@id='shelfType'])[2]")
+	public WebElementFacade ddl_SubscriberType;
+	
+	
+	/**
+	 * @author Dolly
+	 * @description Subscriber Name Webelement in Subscriber LookUp PAge
+	 */
+	@FindBy(xpath="(.//*[@id='addShelf']/div[3]/div[1]/input)[1]")
+	public WebElementFacade tbx_Subscribername;
+	
+	
 	@FindBy(xpath=".//*[@id='topologylookup']/div[3]/div[1]/input")
 	public WebElementFacade tbx_Topologyname;
 	
@@ -218,7 +284,23 @@ public class OVActivationPage extends OmniVuePage {
 	@FindBy(id="FiberProvisioning")
 	public WebElementFacade ddl_FiberProvisioning;
 	
+	@FindBy(id="NOSACertification")
+	public WebElementFacade ddl_nosacer;
+	
+	@FindBy(id="1GbpsIndicator")
+	public WebElementFacade ddl_gbpsind;
+	
 	// End of Device create form
+	
+	//Splitter details in Create form
+	
+	@FindBy(id="SplitterGroupNumber")
+	public WebElementFacade tbx_Splitter_no;
+	
+	@FindBy(id="StartPortNumber")
+	public WebElementFacade tbx_Splitter_port;
+	
+	// End of splitter update
 	
 	//Subscriber field data
 	@FindBy(id="subscriberName")
@@ -237,6 +319,89 @@ public class OVActivationPage extends OmniVuePage {
 	public WebElementFacade ddl_subcsubtype;
 	
 	//End of subscriber
+	
+	//Network Build for create Tab
+	
+	@FindBy(xpath="//input[@id='serviceCLLI']")
+	public WebElementFacade tbx_SWCCLLI;
+			
+	@FindBy(xpath="//input[@id='engOrdId']")
+	public WebElementFacade tbx_EngOrdId;
+	
+	//End of Network build
+	
+	
+	// Subscriber Data field
+	
+	@FindBy(xpath="//*[not(contains(@style,'height: 0px;'))]/following-sibling::ng-include/div/div/div[2]/div[@id='addShelf']/div[2]/div[1]/label[text()='Subscriber Name %']/following-sibling::input")
+	//@FindBy(xpath=".//*[@style='height: 524px;']/following-sibling::ng-include/div/div/div[2]/div[@id='addShelf']/div[2]/div[1]/label[text()='Subscriber Name %']/following-sibling::input")
+	public WebElementFacade tbx_subscriber;
+	
+	@FindBy(xpath=".//*[not(contains(@style,'height: 0px;'))]/following-sibling::ng-include/div/div/div[2]/div[@id='addShelf']/div[2]/div[2]/label[text()='Subscriber Type']/following-sibling::select")
+	public WebElementFacade ddl_subtype;
+	
+	@FindBy(xpath=".//*[not(contains(@style,'height: 0px;'))]/following-sibling::ng-include/div/div/div[2]/div[@id='addShelf']/div[2]/div[3]/label[text()='Subscriber ID %']/following-sibling::input")
+	public WebElementFacade tbx_subid;
+	
+	// End of Subscriber Data field
+	
+	// Divya Logical Port Data
+	
+	@FindBy(xpath=".//*[@id='devicelookup']/div[4]/div[4]/input")
+	public WebElementFacade tbx_devicelookup;
+	
+	@FindBy(id="logicalPortName")
+	public WebElementFacade tbx_logportname;
+	
+	//Location Create form attributes--21/7/2016--US48525-TC53733
+	
+	@FindBy(xpath="//input[@id='addressNumber']") 
+	public WebElementFacade tbx_addressNumber;
+	
+	@FindBy(xpath="//input[@id='street']") 
+	public WebElementFacade tbx_street;
+	
+	@FindBy(xpath="//span[@ng-switch-when='inputSelectOneMenu']/select[(@id='state')]") 
+	public WebElementFacade ddl_state;
+	
+	@FindBy(xpath="//span[@ng-switch-when='inputSelectOneMenu']/select[(@id='city')]") 
+	public WebElementFacade ddl_city;
+	
+	@FindBy(xpath="//select[@id='NewConstructionIndicator']") 
+	public WebElementFacade ddl_NewConstructionIndicator;
+	
+	@FindBy(xpath="//input[@id='sWCCLLI']") 
+	public WebElementFacade tbx_sWCCLLI;
+	
+	
+	//Created By Dolly
+	@FindBy(xpath="//div[@class='device-detail-group'][7]/div[2]/span/label[1]")
+	public WebElementFacade lbl_ServiceDeviceName;
+	
+	
+	
+	//Created By Dolly
+	@FindBy(xpath="//div[span[label[contains(text(),'End Device Name')]]]/following-sibling::div/span[1]/label[1]")
+	public WebElementFacade lbl_endDeviceName;
+	
+	
+	//Created By Dolly
+	@FindBy(xpath=".//*[@id='mainTab']/div/ul/li[3]/a")
+	public WebElementFacade tab_ServiceMainTab;
+	
+	//Created By Dolly
+	@FindBy(xpath="(//div[@class='container']/div[4]//tbody/tr[1]/td[2])[3]")
+	public WebElementFacade lbl_DeviceName;
+
+	// Created By Dolly
+	@FindBy(xpath = "(//thead[tr[th[text()='Device Name']]])[2]/following-sibling::tbody[1]/tr/td[2]/a")
+	public WebElementFacade lbl_startDeviceName;
+
+	//Created By Dolly
+	@FindBy(xpath=".//*[@id='right-content']/div/div[2]/div/div/div[2]/ul/li[1]/a")
+	public WebElementFacade tab_startDevice;
+
+	//End of Location Create form
 	
 	@Override
 	public WebElementFacade getUniqueElementInPage() {
@@ -262,22 +427,49 @@ public class OVActivationPage extends OmniVuePage {
 	
 	public void click_searchbtn(String search_button) throws InterruptedException {
 		switch(search_button){
-		case "Orders":btn_ordersearch.click();
+		case "Orders":btn_ordersearch.click();						
 						break;
-		case "Inventory": btn_inventorysearch.click();
+		case "Inventory": btn_inventorysearch.click();						
 						break;
 		case "Network": btn_networksearch.click();
 						break;
 		case "Task": btn_tasksearch.click();
-						break;
+						break;		
 		}
-		Thread.sleep(5000);
+		Thread.sleep(15000);
 		//btn_search.click();
 	}
 	
 	public void click_viewbtn() {
 		btn_view.click();		
 	}
+	
+	/**
+	 * @author Dolly
+	 * @throws InterruptedException
+	 * @description Method used to click the Edit button in the device detail
+	 *              page
+	 */
+	public void click_Editbtn() throws InterruptedException {
+		tab_mainTab.click();
+		Thread.sleep(3000);
+		click_Editbtn.click();
+		Thread.sleep(5000);
+	}
+	
+	
+	/**
+	 * @author Dolly
+	 * @throws InterruptedException
+	 * @description Method used to click the Edit button in the Network detail
+	 *              page
+	 */
+	public void click_EditDeviceDetailbtn() throws InterruptedException {
+		click_EditDeviceDetailbtn.click();
+		Thread.sleep(5000);
+	}
+	
+	
 	
 	public void clickcreatelaunchform() throws InterruptedException{
 		btn_create_subcform.click();
@@ -312,23 +504,103 @@ public class OVActivationPage extends OmniVuePage {
 			return true;
 				 
 			}
-	
-	//
 
 	
-	public void ddl_createinventType(String subtype){
-		
-	}
-	
-	public void click_Technologytype(String tech){
+	public void click_Technologytype(String tech){       //Selecting Radio Button in Create Form for Inventory Type
 		switch(tech){
-		case "Role": rdbtn_role.click();
-						break;
-		case "Technology": rdbtn_tech.click();
-						break;
-		case "All": rdbtn_all.click();
-					break;
+					case "Role": rdbtn_role.click();
+									break;
+					case "Technology": rdbtn_tech.click();
+									break;
+					case "All": rdbtn_all.click();
+								break;
+					}		
+				}
+	
+	public void selecttech(String techType){   // Selecting the Technology in Create Form for Inventory Type
+		ddl_techType.selectByVisibleText(techType);
+		}
+	
+	public void device_select_create(String devtype,String devsubtype){		//Selecting device type while creating
+		try {
+			Thread.sleep(1000);
+			ddl_devType.selectByVisibleText(devtype);
+			Thread.sleep(1000);
+			ddl_devsubType.selectByVisibleText(devsubtype);
+			Thread.sleep(1000);
+			btn_create.click();
+			Thread.sleep(10000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
 	}
+	
+	
+	//Network Build steps
+	
+	public void btn_Netwrkbuildcreate(){
+		btn_NB_create.click();
+	}
+	
+	public void locntype(String lcntype){		//Sairam code merge---21/7/2016--@US48525 @TC53733
+		try {
+			ddl_Locationtype.selectByVisibleText(lcntype);
+			Thread.sleep(1000);
+			btn_Location_create.click();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+	}	
+	
+	/**
+	 * @author Dolly
+	 * @throws InterruptedException
+	 * Description Method used to validate the Start and End Device tabs.
+	 */
+	public void validate_DeviceNameValue() throws InterruptedException {
+		Thread.sleep(15000);
+		tab_startDevice.click();
+		Thread.sleep(20000);
+		
+		String startdeviceName = lbl_startDeviceName.getText().trim();
+		System.out.println("startdeviceName = "+startdeviceName);
+		
+//		String startdeviceName = lbl_DeviceName.getText();
+
+		String startserviceDeviceName = lbl_ServiceDeviceName.getText().trim();
+		String endServiceDeviceName = lbl_endDeviceName.getText().trim();
+		
+		System.out.println("startserviceDeviceName = "+startserviceDeviceName);
+		System.out.println("endServiceDeviceNAme = "+endServiceDeviceName);
+		
+		if(startdeviceName.equals(startserviceDeviceName))
+		{
+			lbl_ServiceDeviceName.click();
+			System.out.println("device name is same");
+			
+			lbl_ServiceDeviceName.click();
+			Thread.sleep(15000);
+			String serviceTab = tab_ServiceMainTab.getText().trim();
+			
+			System.out.println("serviceTab = "+serviceTab);
+			System.out.println("device name is same");
+		}
+		else
+		{
+			lbl_endDeviceName.click();
+			System.out.println("device name is same");
+			
+			lbl_endDeviceName.click();
+			Thread.sleep(15000);
+			String serviceTab = tab_ServiceMainTab.getText().trim();
+			
+			System.out.println("serviceTab = "+serviceTab);
+			System.out.println("device name is same");
+		}
+				
+}
+
 }

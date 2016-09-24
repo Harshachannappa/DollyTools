@@ -52,8 +52,17 @@ public class OVAssociatedServicesPage extends OmniVuePage {
 	@FindBy(xpath=".//*[@id='end_0']")
 	public WebElementFacade editctag_fld2;
 	
-	@FindBy(xpath=".//*[@id='right-content']/div/div[2]/div/div/div[2]/div/div/div/div/div[3]/div[@ng-show='showCEVLANAlert']")
-	public WebElementFacade Alerttxt_txtbx;
+	@FindBy(xpath=".//*[@class='ng-binding alert alert-danger' and @ng-class='ceVlanAlert.className']")
+	public WebElementFacade lbl_alertmsgctag;
+	
+	@FindBy(xpath=".//*[@class='ng-binding alert alert-success']")
+	public WebElementFacade lbl_succmsgctag;
+	
+	@FindBy(xpath=".//*[@class='ng-binding alert alert-danger' and @ng-class='ceVlanAlert.className']/button")
+	public WebElementFacade btn_alertmsgctag;
+	
+	@FindBy(xpath=".//*[@class='ng-binding alert alert-success']/button")
+	public WebElementFacade btn_succmsgctag;
 	
 	@FindBy(xpath=".//*[@id='right-content']/div/div[2]/div/div/div[2]/div/div/div/div[@class='ng-scope']/div[2]/label")
 	public WebElementFacade Ctag_index;

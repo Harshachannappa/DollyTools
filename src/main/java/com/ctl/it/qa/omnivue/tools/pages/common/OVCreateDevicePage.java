@@ -21,6 +21,7 @@ public class OVCreateDevicePage extends OmniVuePage {
 	UserSteps enduser;
 	OVLoginPage loginPage;
 	
+	
 	@FindBy(id="isDiversed")
 	public WebElementFacade ddl_IsDiversed;//2
 		
@@ -65,6 +66,35 @@ public class OVCreateDevicePage extends OmniVuePage {
 	
 	@FindBy(xpath=".//*[@id='loclkp']/img")
 	public WebElementFacade btn_locationLookup;
+	//----------------------Dolly-------------------------
+	@FindBy(xpath="(//span[@class='input-group-addon span-img']/img)[3]")
+	public WebElementFacade btn_subscriberName;
+	
+	//-----------------Dolly-----------------
+	@FindBy(xpath=".//*[@id='addShelf']/div[5]/div[2]/input[@value='LookUp']")
+	public WebElementFacade btn_subscriberLookUp;
+	
+	
+	//------Dolly------------------
+	@FindBy(xpath=".//*[@id='subscriber_lookup_0']/tbody/tr/td[1]/a/span")
+	public WebElementFacade lnk_subscriberName;
+	
+
+	/**
+	 * @author Dolly
+	 * @description Save button Webelement in the device detail page
+	 */
+	@FindBy(xpath="(//input[@value='Save'])[1]")
+	public WebElementFacade btn_saveDeviceDetail;
+	
+	
+	/**
+	 * @author Dolly
+	 * @description WebElement in Device Detail Edit Page
+	 */
+	@FindBy(xpath="(//div[@class='row form-group-device'])[16]/div[3]//img")
+	public WebElementFacade btn_searchSubscriberName;
+	
 	
 	@FindBy(xpath=".//*[@title='CLLI Lookup']/div[2]/div/div[2]/div[5]/button[text()='Look Up']")
 	public WebElementFacade btn_lookUp;
@@ -89,9 +119,20 @@ public class OVCreateDevicePage extends OmniVuePage {
 	@FindBy(xpath=".//*[@value='Create']")
 	public WebElementFacade btn_Create;
 	
+	//created By Dolly
+	@FindBy(xpath=".//*[@id='left-content-tab']/div/ul/li[2]/a/tab-heading")
+	public WebElementFacade tab_NetworkDetail;
+	
 	@FindBy(xpath=".//*[@class='control-label ng-binding']")//Only selecting the first rom not all the elements
 	//@FindBy(xpath=".//*[@class='ng-scope']/div[11]/div")
 	public List<WebElementFacade> lbl_allXapath;
+	
+	
+	//---------------dolly-------------------
+	@FindBy(xpath="//label[@class='col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label']")//Only selecting the first rom not all the elements
+	//@FindBy(xpath=".//*[@class='ng-scope']/div[11]/div")
+	public List<WebElementFacade> lbl_allXapath1;
+	
 	
 	//@FindBy(xpath=".//*[@id='1']/ng-include/div/div[11]/div/div[2]/div/div[3]/input[3]")  /// Check is it used
 	@FindBy(xpath=".//*[@class='ng-pristine ng-untouched ng-valid' and @value='PASSIVE']")
@@ -116,15 +157,56 @@ public class OVCreateDevicePage extends OmniVuePage {
 	public WebElementFacade success_alert;
 	
 	//Tab switch Check its already present
-	@FindBy(xpath="//*[contains(text(),'Create Device')]")
+	//@FindBy(xpath="//*[contains(text(),'Create Device')]")
+	@FindBy(xpath=".//*[@ng-click='onClickTab(tab)']")
 	public WebElementFacade tab;
 	
-	//Network Build for create device--Sairam
-		@FindBy(xpath="//input[@id='serviceCLLI']")
-		public WebElementFacade tbx_SWCCLLI;
-		
-		@FindBy(xpath="//input[@id='engOrdId']")
-		public WebElementFacade tbx_EngOrdId;
+	//Network Build for create device--Sairam	
+	
+	//Start of Netwrok Device creation
+	
+	@FindBy(xpath="//span[text()=' OLT']")
+	public WebElementFacade btn_gpon_OLT;		
+	
+	@FindBy(xpath="//span[text()=' Splitter']")
+	public WebElementFacade btn_gpon_Splitter;
+	
+	@FindBy(xpath="//span[text()=' FDP']")
+	public WebElementFacade btn_gpon_FDP;		
+	
+	@FindBy(xpath="//span[text()=' MST']")
+	public WebElementFacade btn_gpon_MST;		
+	
+	@FindBy(xpath="//span[text()=' MDU']")
+	public WebElementFacade btn_gpon_MDU;		
+	
+	@FindBy(xpath="//span[text()=' FDH']")
+	public WebElementFacade btn_gpon_FDH;		
+	
+	@FindBy(xpath="//span[text()=' ONT']")
+	public WebElementFacade btn_gpon_ONT;		
+	
+	//Working on only one Netwrok device.
+	
+	@FindBy(xpath=".//*[@id='tab:0']")
+	public WebElementFacade btn_gpon_tab0;
+	
+	@FindBy(xpath=".//*[@value='+']")
+	public WebElementFacade btn_gpon_expand;
+	
+	@FindBy(xpath=".//*[@ng-model='aDevice.chkValue']")
+	public WebElementFacade rdbtn_gpon_select;
+	
+	@FindBy(xpath=".//label")
+	public List<WebElementFacade> lbl_gpon_create_fields;
+	//public static String lbl_gpon_create_fields="//*[@alt='OLT']/div";
+	
+	@FindBy(className="badge")
+	public List<WebElementFacade> btn_gpon_device_tab;
+			
+	@FindBy(className="ng-binding")
+	public WebElementFacade btn_gpon_device_select;
+			
 		
 		@FindBy(xpath= "//h4[@class='col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center']/button[7]")
 		public WebElementFacade btn_NB_device;
@@ -143,9 +225,136 @@ public class OVCreateDevicePage extends OmniVuePage {
 	
 	//End of network build
 		
+	//Tab switch Check its already present
+		@FindBy(xpath="//*[contains(text(),'Create Device')]")
+		public WebElementFacade createtab;
+		
+	
+	//Subscriber field
+		
+		@FindBy(xpath=".//ng-include[@class='ng-scope']/div/div[11]/div/div[2]/div/div[4]/div[9]/div/div/div[2]/div/div/div[1]/div[1]/span/img")
+		public WebElementFacade btn_subsciber;
+				
+		@FindBy(xpath="//*[not(contains(@style,'height: 0px;'))]/following-sibling::ng-include/div/div/div[2]/div[@id='addShelf']/div[3]/div[2]/input[@value='LookUp']")
+		public WebElementFacade btn_sublookup;
+				
+		@FindBy(xpath=".//*[contains(@id,'subscriber_lookup_')]/tbody/tr[1]/td[1]/a/span")
+		public WebElementFacade lnk_addsub;
+				
+	//End of Subscriber build
+		@FindBy(id="ConnectorType")
+		public WebElementFacade ddl_connectortype;  //Passive device create form details
+		
+		
+		
+		//Created By Dolly
+		@FindBy(xpath=".//*[@id='left-content-tab']/div/div/div[1]/div/div/div[3]/div/div[3]/ng-include/div[2]/div[1]/div[3]/div[2]/select")
+		public WebElementFacade ddl_FunctionalStatus;
+		
+		
 		@FindBy(xpath=".//*[text()='DSL OVC']")
 		public List<WebElementFacade> lbl_allServiceXapath;// Move to service page
 
+		@FindBy(xpath=".//*[@ng-if='viewDevice']/div[@class='container']/div[4]/table/tbody[1]/tr/td[2]")
+		public WebElementFacade lbl_devicename; 		//Getting the device name
+		
+	//Logical Port Creation---21/7/2016---Divya-OSIp Regression	
+		@FindBy(xpath=".//*[@ng-switch-when='circuitBuildingClliLookup']/div[1]/span/img")
+		public WebElementFacade btn_devicelookup;				//Divya Logical port paths --- 20-7-2016
+		
+		@FindBy(xpath=".//*[@id='devicelookup']/div[5]/div[2]/input[1]")
+		public WebElementFacade btn_lookuplogicalfrm;
+		
+		@FindBy(xpath=".//*[@id='logicalPhysicalPort']/following-sibling::span/img")
+		public WebElementFacade btn_lookuplogicalport;
+		
+		@FindBy(xpath=".//*[@ng-click='servicePhysicalPortlookUp()']")
+		public WebElementFacade btn_lookuplogicalport_lookup;
+			
+		@FindBy(xpath=".//*[@id='servicePort_look_up']/tbody/tr[1]/td[2]/a")
+		public WebElementFacade lbl_selctlogicalport_lookup;
+		
+		
+	// End of Logical port
+		
+		//Location creation start
+		@FindBy(xpath="//div[@ng-show='showLocationType']/select")
+		public WebElementFacade ddl_Locationtype;
+		
+		@FindBy(xpath="//button[@ng-click='create();']")
+		public WebElementFacade btn_Location_create;
+		
+		@FindBy(xpath="//input[@id='addRangeY']")
+		public WebElementFacade rdbtn_addRange;
+		
+		@FindBy(xpath="//select[@id='locationRole']") 
+		public WebElementFacade ddl_locationRole;
+		
+		@FindBy(xpath="//input[@id='addressNumber']") //2------------Check do we need its in activationpage
+		public WebElementFacade tbx_addressNumber;
+		
+		@FindBy(xpath="//input[@id='street']") //3------------Check do we need its in activationpage
+		public WebElementFacade tbx_street;
+		
+		@FindBy(xpath="//span[@ng-switch-when='inputSelectOneMenu']/select[(@id='state')]") //4------------Check do we need its in activationpage
+		public WebElementFacade ddl_state;
+		
+		@FindBy(xpath="//span[@ng-switch-when='inputSelectOneMenu']/select[(@id='city')]") //5------------Check do we need its in activationpage
+		public WebElementFacade ddl_city;
+		
+		@FindBy(xpath="//input[@id='zip']") //6----------Not a mandatory field so not used
+		public WebElementFacade tbx_zip;
+		
+		@FindBy(xpath="//select[@id='NewConstructionIndicator']") //7
+		public WebElementFacade ddl_NewConstructionIndicator;
+		
+		@FindBy(xpath="//input[@id='sWCCLLI']") //8
+		public WebElementFacade tbx_sWCCLLI;
+		
+		@FindBy(xpath="//select[@id='addrangeVal']") //9
+		public WebElementFacade ddl_addrangeVal;
+		
+		@FindBy(xpath="//input[@value='Find Address Range']") //10
+		public WebElementFacade btn_FindAddressRange;
+		
+		@FindBy(xpath="//select[@id='ContractType']") //11
+		public WebElementFacade ddl_CTL_ContractType;
+		
+		@FindBy(xpath="//div[@ng-if='isEditMode']/div[2]/div[7]/div/div[2]/ng-include/div/span[2]/span/select")
+		public WebElementFacade ddl_Edit_contractType;
+		
+		@FindBy(xpath="//input[(@class='cmdButton')and(@value='Edit')]")
+		public WebElementFacade btn_Edit;
+		
+		@FindBy(xpath="//input[(@class='cmdButton')and(@value='Save')]")
+		public WebElementFacade btn_Save;
+		
+		@FindBy(xpath="//select[@id='RestrictedAddressCode']") //12
+		public WebElementFacade ddl_RestrictedAddressCode;
+		
+			
+		@FindBy(xpath="//*[contains(text(),'Create Individual Location')]") //14
+		public WebElementFacade tab_Indivdual_Location;
+		
+		@FindBy(xpath="//*[contains(text(),'Create Individual Location')]/a")
+		public WebElementFacade tab_Indivdual_Location_cancel;
+		
+		//@FindBy(xpath="//*[ends-with(text(),'STREET3')]")
+		//public WebElementFacade tab_Indivdual_Location;
+		
+		@FindBy(xpath="//div[@class='ng-binding alert alert-success']") //15
+		public WebElementFacade loc_success;
+		
+		@FindBy(xpath="//div[@ng-controller='viewEditLocationAWRCtrl']/div[@class='ng-binding alert alert-success']")
+		public WebElementFacade loc_Edit_success;
+		
+		@FindBy(xpath="//*[@id='mainTab']/div/ul/li[Last()-1]/a/tab-heading")
+		public WebElementFacade created_tab;
+		
+		
+
+		//End of location creation
+		
 	@Override
 	public WebElementFacade getUniqueElementInPage() {
 		// TODO Auto-generated method stub
@@ -334,14 +543,14 @@ public class OVCreateDevicePage extends OmniVuePage {
 										}
 										break;
 							
-						case "ETHERNET": if(rbn_Gpon.isSelected())
+						case "ETHERNET": if(rbn_ethernet.isSelected())
 										{
 											isRadioButtonSelected=true;
 											System.out.println(radioButton+"is seclected");
 										}
 										break;
 		
-						case "GPON": if(rbn_ethernet.isSelected())
+						case "GPON": if(rbn_Gpon.isSelected())
 										{
 											isRadioButtonSelected=true;
 											System.out.println(radioButton+"is seclected");
@@ -378,4 +587,68 @@ public class OVCreateDevicePage extends OmniVuePage {
 		btn_Create.click();
 	}
 	
+	
+	//created By Dolly	
+	public void tabNetworkDetail(){
+		tab_NetworkDetail.click();
+	}
+	
+	
+	/**
+	 * @author Dolly
+	 * @throws InterruptedException
+	 * description Method to click the Save button in Network Cetail Page
+	 */
+	public void saveNetworkingDetails() throws InterruptedException{
+		btn_saveDeviceDetail.click();//Rework
+		Thread.sleep(5000);
+	}
+	
+	
+	//Created By Dolly
+	public void saveDeviceDetails() throws InterruptedException{
+		btn_searchSubscriberName.click();//Rework
+		Thread.sleep(5000);
+	}
+	
+	
+	
+	public void create_msg(){
+		createtab.click();
+		try {
+			Thread.sleep(5000);
+		
+		WebElement ele = ddl_Equipment_role.selectByValue("0");
+		String role =ele.getText();
+		enduser.created_device_role_is(":"+role+" "+create_device_successfull_msg());
+		System.out.println("*******************"+create_device_successfull_msg());
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	//GPON Netwrok Build steps below
+	
+	public void gpon_ntwdevice_select(String devicetype){
+		try {			
+			switch(devicetype){
+			
+			case "ONT":	btn_gpon_ONT.click();
+						Thread.sleep(2000);
+			}
+			Thread.sleep(2000);
+			btn_gpon_tab0.click();
+			Thread.sleep(2000);
+			rdbtn_gpon_select.click();
+			btn_gpon_expand.click();
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	
+		
+	}
 }
