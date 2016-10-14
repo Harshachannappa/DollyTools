@@ -2,6 +2,7 @@ package com.ctl.it.qa.omnivue.tools.pages.common;
 
 
 import com.ctl.it.qa.omnivue.tools.pages.OmniVuePage;
+import java.util.List;
 
 import net.serenitybdd.core.annotations.findby.FindBy;
 import net.serenitybdd.core.pages.WebElementFacade;
@@ -14,6 +15,11 @@ public class OVHomepage extends OmniVuePage {
 	@FindBy(xpath="html/body/div[3]/form/table/tbody/tr/td[17]/table/tbody/tr/td[2]/table/tbody/tr/td")
 	public WebElementFacade tab_activation;	
 	
+	@FindBy(xpath=".//*[@id='pwd-container']/div[2]/section/img")
+	public WebElementFacade lbl_welcomeomnivue;	
+	
+	@FindBy(xpath=".//*[@ng-class='status.MSGSEV']")
+	public List<WebElementFacade> lbl_systemstatus;
 	
 	@Override
 	public WebElementFacade getUniqueElementInPage() {

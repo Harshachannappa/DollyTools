@@ -5,22 +5,33 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Assert;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 
 //import org.openqa.selenium.Alert;
 
+import org.openqa.selenium.support.ui.WebDriverWait;
+
 import com.ctl.it.qa.omnivue.tools.pages.common.OVActivationPage;
 import com.ctl.it.qa.omnivue.tools.pages.common.OVAssociatedModServicesPage;
 import com.ctl.it.qa.omnivue.tools.pages.common.OVAssociatedServicesPage;
+import com.ctl.it.qa.omnivue.tools.pages.common.OVContactSearchDetailsPage;
 import com.ctl.it.qa.omnivue.tools.pages.common.OVCreateDevicePage;
+import com.ctl.it.qa.omnivue.tools.pages.common.OVCreateTopologyPage;
+import com.ctl.it.qa.omnivue.tools.pages.common.OVCreateTransportPathPage;
 import com.ctl.it.qa.omnivue.tools.pages.common.OVDeviceLookupPage;
 import com.ctl.it.qa.omnivue.tools.pages.common.OVHomepage;
+import com.ctl.it.qa.omnivue.tools.pages.common.OVLocationDetailsPage;
 import com.ctl.it.qa.omnivue.tools.pages.common.OVLoginPage;
 import com.ctl.it.qa.omnivue.tools.pages.common.OVModDeviceLookupPage;
 import com.ctl.it.qa.omnivue.tools.pages.common.OVModServiceDetailsPage;
+import com.ctl.it.qa.omnivue.tools.pages.common.OVOrderPage;
 import com.ctl.it.qa.omnivue.tools.pages.common.OVSearchDevicePage;
 import com.ctl.it.qa.omnivue.tools.pages.common.OVServiceDetailsPage;
+import com.ctl.it.qa.omnivue.tools.pages.common.OvSearchLinkdetailspage;
 import com.ctl.it.qa.omnivue.tools.steps.OmniVueSteps;
 import com.ctl.it.qa.staf.xml.reader.IntDataContainer;
 
@@ -42,7 +53,15 @@ public class UserSteps extends OmniVueSteps  {
 	OVModDeviceLookupPage moddevicelookuppage;
 	OVAssociatedModServicesPage modassocservicespage;
 	OVCreateDevicePage devcreatepage;
+	OVOrderPage orderpage;
 	//OVCreateLocationPage locpage;
+	
+	OVLocationDetailsPage ovldp; 
+	OvSearchLinkdetailspage ovsearchlink; 
+	 OVContactSearchDetailsPage ovcsdp;
+	 
+	 OVCreateTransportPathPage transportPathPage;
+	 OVCreateTopologyPage createTopologyPage;
 	
 
 	@Step
@@ -793,6 +812,17 @@ public class UserSteps extends OmniVueSteps  {
 		actvtnpage.sel_devicesubtype(splitter_option);		
 	}
 	
+	//New Update--9/23
+	
+	@Step
+	public void edit_Button_NetworkingDetailPage(String button) throws InterruptedException {
+		searchdevicepage.click_EditDeviceDetailbtn(button);
+	}
+	
+	@Step
+	public void validate_lookupPage() {
+		servicedetailspage.validate_subscriberLookupPage();		
+	}
 	
 	//End of search 
 	
@@ -967,6 +997,108 @@ public class UserSteps extends OmniVueSteps  {
 		actvtnpage.i_Select_for_the_drop_down_Service_Type_actvtnpage(service_type);		
 	}
 	
+	//Pratim Team Updates--9/23/2016
+	
+	@Step
+	public void edit_Button_DeviceDetailPage(String button) throws InterruptedException {
+		devicelookuppage.click_Editbtn(button);
+	}
+	
+	@Step
+	public void fillenabledfield(String testdata){
+		try
+		{	
+			Thread.sleep(5000);
+			List<WebElementFacade> acutalList = devcreatepage.lbl_allXapath1;
+			ArrayList<String> atributesOfPage=new ArrayList<String>();
+			
+			System.out.println("==========Adding the attribute to the array list==============");
+			for(int j=0;j<acutalList.size();j++){
+				
+				atributesOfPage.add(j, acutalList.get(j).getText());
+				
+				//System.out.println("Step Two done");
+				//System.out.println(atributesOfPage.get(j));
+			}
+			
+			System.out.println("atributesOfPage = "+atributesOfPage);
+			Thread.sleep(3000);	
+			//for(int i=0;i<acutalList.size();i++){
+			for(int i=0;i<atributesOfPage.size();i++){
+				//System.out.println(atributesOfPage.get(i));
+				if(atributesOfPage.get(i).equals("Functional Status")){
+			
+						devcreatepage.ddl_FunctionalStatus.selectByVisibleText("Faulty");
+						Thread.sleep(3000);	
+						
+				}
+			
+				else if(atributesOfPage.get(i).equals("Subscriber Name*")){					
+					
+						devcreatepage.btn_subscriberName.click();
+						Thread.sleep(5000);
+									//String parentwin=devcreatepage.window_switch();
+						Thread.sleep(5000);
+						fill_fields_from("OVActivationPage",testdata,"SubscriberName");
+						devcreatepage.btn_subscriberLookUp.click();//Rework
+						Thread.sleep(5000);
+						devcreatepage.lnk_subscriberName.click();//Rework
+						Thread.sleep(5000);
+				}
+				
+				else if(atributesOfPage.get(i).equals("Subscriber Name")){							
+				
+						devcreatepage.btn_searchSubscriberName.click();
+						Thread.sleep(5000);
+					// String parentwin=devcreatepage.window_switch();
+						Thread.sleep(5000);
+						fill_fields_from("OVActivationPage", testdata, "SubscriberName");
+						devcreatepage.btn_subscriberLookUp.click();// Rework
+						Thread.sleep(5000);
+						devcreatepage.lnk_subscriberName.click();// Rework
+						Thread.sleep(5000);
+					// devcreatepage.switch_win(parentwin);
+							
+				}
+				else if(atributesOfPage.get(i).equals("Device CLLI*")){							
+					Thread.sleep(5000);
+					fill_fields_from("OVActivationPage", testdata, "DeviceCLLI");
+					Thread.sleep(5000);
+				// devcreatepage.switch_win(parentwin);
+						
+			}
+			}
+			
+			devcreatepage.btn_saveDeviceDetail.click();//Rework
+			Thread.sleep(5000);
+		
+		}
+		catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Step
+	public void clickedNetworkingDetailsTab(){
+		searchdevicepage.tabNetworkDetail();
+	}
+	
+	@Step
+	public void saveNetworkingDetails() throws InterruptedException{
+		searchdevicepage.saveNetworkingDetails();
+	}
+	
+	@Step
+	public void fillSubscriberFields(String testdata) throws InterruptedException{
+		devcreatepage.btn_subsciber.click();
+		Thread.sleep(5000);
+		fill_fields_from("OVCreateDevicePage",testdata,"Subscriberdata");
+		devcreatepage.btn_sublookup.click();
+		Thread.sleep(1000);
+		devcreatepage.lnk_addsub.click();
+		Thread.sleep(3000);
+		}
+	
 	
 	//Validation sections --26/8/2016
 	
@@ -981,6 +1113,662 @@ public class UserSteps extends OmniVueSteps  {
 		devcreatepage.validate_apacheSolr_for_subscriber_in_create_device_service_createpage();
 	}
 	
+	//Validation new update -- 9/23
+	@Step
+	public void validateDeviceDetail(String template){
+		searchdevicepage.validateDeviceDetail(template);
+	}
+	
+	@Step
+	public void validateNetworkDetail(String template){
+		searchdevicepage.validateNetworkDetail(template);
+	}
+	
+	@Step
+	public void validate_DeviceName() throws InterruptedException{
+		searchdevicepage.validate_DeviceNameValue();
+	}
+	
+	@Step
+	public void validateViewList(String template){
+		servicedetailspage.validateViewList(template);
+	}
+	
+	@Step
+	public void verifyDeviceDetailsField(){
+		String ExpectedfunctionalStatus = actvtnpage.tag_functionalStatus.getText();
+		String ExpectednetworkElementNode = actvtnpage.tag_networkElementNode.getText();
+		String Expectedalias1 = actvtnpage.tag_alias1.getText();
+		String Expectedalias2 = actvtnpage.tag_alias2.getText();
+		String ExpectedvendorPortNum = actvtnpage.tag_vendorPortNum.getText();
+		String ExpectedpartType = actvtnpage.tag_partType.getText();
+		String ExpectedManufacpartNum = actvtnpage.tag_ManufacpartNum.getText();
+		String ExpectedManagementVLAN = actvtnpage.tag_ManagementVLAN.getText();
+		
+			UserSteps enduser = new UserSteps();
+			
+			IntDataContainer datacontainer = enduser.get_data_for_page(actvtnpage).getContainer("TC55484-CD");
+			String functionalStatus = datacontainer.getFieldValue("ddl_FunctionalStatus");
+			String networkElementNode = datacontainer.getFieldValue("tbx_networkElementNode");
+			String alias1 = datacontainer.getFieldValue("tbx_Alias1");
+			String alias2 = datacontainer.getFieldValue("tbx_Alias2");
+			String vendorPortNum = datacontainer.getFieldValue("tbx_vedorPartNum");
+			String partType = datacontainer.getFieldValue("tbx_partType");
+			String ManufacpartNum = datacontainer.getFieldValue("tbx_manufacturerPartNum");
+			String ManagementVLAN = datacontainer.getFieldValue("tbx_manufacturerVLAN");
+			String functionalStatusField[] = functionalStatus.split(":");
+			String actualfunctionalStatus = functionalStatusField[1];
+			String networkElementNodeField[] = networkElementNode.split(":");
+			String actualnetworkElementNode = networkElementNodeField[1];
+			String alias1Field[] = alias1.split(":");
+			String actualalias1 = alias1Field[1];
+			String alias2Field[] = alias2.split(":");
+			String actualalias2 = alias2Field[1];
+			String vendorPortNumField[] = vendorPortNum.split(":");
+			String actualvendorPortNum = vendorPortNumField[1];
+			String partTypeField[] = partType.split(":");
+			String actualpartType = partTypeField[1];
+			String ManufacpartNumField[] = ManufacpartNum.split(":");
+			String actualManufacpartNum = ManufacpartNumField[1];
+			String ManagementVLANField[] = ManagementVLAN.split(":");
+			String actualManagementVLAN = ManagementVLANField[1];
+			
+			Assert.assertEquals(ExpectedfunctionalStatus, actualfunctionalStatus);
+			Assert.assertEquals(ExpectednetworkElementNode, actualnetworkElementNode);
+			Assert.assertEquals(Expectedalias1, actualalias1);
+			Assert.assertEquals(Expectedalias2, actualalias2);
+			Assert.assertEquals(ExpectedvendorPortNum, actualvendorPortNum);
+			Assert.assertEquals(ExpectedpartType, actualpartType);
+			Assert.assertEquals(ExpectedManufacpartNum, actualManufacpartNum);
+			Assert.assertEquals(ExpectedManagementVLAN, actualManagementVLAN);
+}
+	
+	@Step
+	public void verifyNetworkingDetailsField(){
+
+		String ExpectedNDchasisSerialNum = actvtnpage.tag_NDchasisSerialNum.getText();
+		String ExpectedNDserialNum = actvtnpage.tag_NDserialNum.getText();
+		String ExpectedNDSocketNum = actvtnpage.tag_NDSocketNum.getText();
+		String ExpectedNDHardwareVersion = actvtnpage.tag_NDHardwareVersion.getText();
+		String ExpectedNDSoftwareVersion = actvtnpage.tag_NDSoftwareVersion.getText();
+		String ExpectedNDIPSubnetMaskm = actvtnpage.tag_NDIPSubnetMask.getText();
+		String ExpectedNDRevision= actvtnpage.tag_NDRevision.getText();
+		String ExpectedDisContinueReason = actvtnpage.tag_DisContinueReason.getText();
+		String ExpectedNDMacAddress = actvtnpage.tag_NDMacAddress.getText();
+		String ExpectedNDSNMPObjectID = actvtnpage.tag_NDSNMPObjectID.getText();
+		String ExpectedNDFirmWareVersion = actvtnpage.tag_NDFirmWareVersion.getText();
+		String ExpectedNDNMSType = actvtnpage.tag_NDNMSType.getText();
+		String ExpectedNDNMSHostName = actvtnpage.tag_NDNMSHostName.getText();
+		String ExpectedNDNMSDescription = actvtnpage.tag_NDNMSDescription.getText();
+		String ExpectedNDNetworkIdentifier = actvtnpage.tag_NDNetworkIdentifier.getText();
+		String ExpectedNDNetworkName = actvtnpage.tag_NDNetworkName.getText();
+		
+			UserSteps enduser = new UserSteps();
+			
+			IntDataContainer datacontainer = enduser.get_data_for_page(actvtnpage).getContainer("TC55484-ND");
+			String chasisSerialNum = datacontainer.getFieldValue("tbx_NDchasisSerialNum");
+			String serialNum = datacontainer.getFieldValue("tbx_NDserialNum");
+			String SocketNum = datacontainer.getFieldValue("tbx_NDSocketNum");
+			String HardwareVersion = datacontainer.getFieldValue("tbx_NDHardwareVersion");
+			String SoftwareVersion = datacontainer.getFieldValue("tbx_NDSoftwareVersion");
+			String IPSubnetMask = datacontainer.getFieldValue("tbx_NDIPSubnetMask");
+			String Revision = datacontainer.getFieldValue("tbx_NDRevision");
+			String DisContinueReason = datacontainer.getFieldValue("tbx_DisContinueReason");
+			String MacAddress = datacontainer.getFieldValue("tbx_NDMacAddress");
+			String SNMPObjectID = datacontainer.getFieldValue("tbx_NDSNMPObjectID");
+			String FirmWareVersion = datacontainer.getFieldValue("tbx_NDFirmWareVersion");			
+			String NMSType = datacontainer.getFieldValue("tbx_NDNMSType");
+			String NMSHostName = datacontainer.getFieldValue("tbx_NDNMSHostName");
+			String NMSDescription = datacontainer.getFieldValue("tbx_NDNMSDescription");			
+			String NetworkIdentifier = datacontainer.getFieldValue("tbx_NDNetworkIdentifier");
+			String NetworkName = datacontainer.getFieldValue("tbx_NDNetworkName");
+			
+			String chasisSerialNumField[] = chasisSerialNum.split(":");
+			String actualchasisSerialNum =chasisSerialNumField[1];
+			String serialNumField[] = serialNum.split(":");
+			String actualserialNum =serialNumField[1];
+			String SocketNumField[] = SocketNum.split(":");
+			String actualSocketNum =SocketNumField[1];
+			String HardwareVersionField[] = HardwareVersion.split(":");
+			String actualHardwareVersion =HardwareVersionField[1];
+			String SoftwareVersionField[] = SoftwareVersion.split(":");
+			String actualSoftwareVersion =SoftwareVersionField[1];
+			String IPSubnetMaskField[] = IPSubnetMask.split(":");
+			String actualIPSubnetMask =IPSubnetMaskField[1];
+			String RevisionField[] = Revision.split(":");
+			String actualRevision =RevisionField[1];
+			String DisContinueReasonField[] = DisContinueReason.split(":");
+			String actualDisContinueReason =DisContinueReasonField[1];	
+			String MacAddressField[] = MacAddress.split(":");
+			String actualMacAddress =MacAddressField[1];
+			String SNMPObjectIDField[] = SNMPObjectID.split(":");
+			String actualSNMPObjectID =SNMPObjectIDField[1];
+			String FirmWareVersionField[] = FirmWareVersion.split(":");
+			String actualFirmWareVersion =FirmWareVersionField[1];
+			String NMSTypeField[] = NMSType.split(":");
+			String actualNMSType =NMSTypeField[1];
+			String NMSHostNameField[] = NMSHostName.split(":");
+			String actualNMSHostName =NMSHostNameField[1];
+			String NMSDescriptionField[] = NMSDescription.split(":");
+			String actualNMSDescription =NMSDescriptionField[1];
+			String NetworkIdentifierField[] = NetworkIdentifier.split(":");
+			String actualNetworkIdentifier =NetworkIdentifierField[1];
+			String NetworkNameField[] = NetworkName.split(":");
+			String actualNetworkName =NetworkNameField[1];
+			
+			
+			Boolean	flag = ExpectedNDchasisSerialNum.contains(actualchasisSerialNum);
+			Assert.assertTrue(flag);
+			flag =ExpectedNDserialNum.contains(actualserialNum);
+			Assert.assertTrue(flag);
+			flag =ExpectedNDSocketNum.contains(actualSocketNum);
+			Assert.assertTrue(flag);
+			flag =ExpectedNDHardwareVersion.contains(actualHardwareVersion);
+			Assert.assertTrue(flag);
+			flag =ExpectedNDSoftwareVersion.contains(actualSoftwareVersion);
+			Assert.assertTrue(flag);
+			flag =ExpectedNDIPSubnetMaskm.contains(actualIPSubnetMask);
+			Assert.assertTrue(flag);
+			flag =ExpectedDisContinueReason.contains(actualDisContinueReason);
+			Assert.assertTrue(flag);
+			flag =ExpectedNDMacAddress.contains(actualMacAddress);
+			Assert.assertTrue(flag);
+			flag =ExpectedNDSNMPObjectID.contains(actualSNMPObjectID);
+			Assert.assertTrue(flag);
+			flag =ExpectedNDRevision.contains(actualRevision);
+			Assert.assertTrue(flag);
+			flag =ExpectedNDFirmWareVersion.contains(actualFirmWareVersion);
+			Assert.assertTrue(flag);
+			flag =ExpectedNDNMSType.contains(actualNMSType);
+			Assert.assertTrue(flag);
+			flag =ExpectedNDNMSHostName.contains(actualNMSHostName);
+			Assert.assertTrue(flag);
+			flag =ExpectedNDNMSDescription.contains(actualNMSDescription);
+			Assert.assertTrue(flag);
+			flag =ExpectedNDNetworkIdentifier.contains(actualNetworkIdentifier);
+			Assert.assertTrue(flag);
+			flag =ExpectedNDNetworkName.contains(actualNetworkName);
+			Assert.assertTrue(flag);			
+		}
+	
+	@Step
+	public void verifywirecenterCLLILookupFields() throws InterruptedException {
+		boolean flag = actvtnpage.tbx_wireCenteraddress.isDisplayed();
+		Assert.assertTrue("address field is not displayed", flag);
+		flag= actvtnpage.tbx_wireCenterstreetName.isDisplayed();
+		Assert.assertTrue("street name field is not displayed", flag);
+		flag= devcreatepage.ddl_wireCenterstreetType.isPresent();
+		Assert.assertTrue("street type field is not displayed", flag);		
+		flag= devcreatepage.tbx_wireCenterCity.isDisplayed();
+		Assert.assertTrue("city field is not displayed", flag);
+		flag= devcreatepage.tbx_wireCenterstate.isPresent();
+		Assert.assertTrue("state field is not displayed", flag);
+		flag= devcreatepage.tbx_wireCenterzip.isDisplayed();
+		Assert.assertTrue("zip field is not displayed", flag);
+		flag= actvtnpage.tbx_wireCenterbuildingCLLI.isDisplayed();
+		Assert.assertTrue("Building CLLI field is not displayed", flag);
+		flag= devcreatepage.btn_wireCenterLookUp.isDisplayed();
+		Assert.assertTrue("look up button is not displayed", flag);
+		flag= devcreatepage.btn_wireCenterCancel.isDisplayed();
+		Assert.assertTrue("Cancel button is not displayed", flag);
+		commonData.getContainer(actvtnpage.getClass().getSimpleName()).setActualValuesForAllContainers();
+		fillMandatoryFields(actvtnpage, commonData.getContainer(actvtnpage.getClass().getSimpleName()).getContainer("TC39242"));
+		devcreatepage.btn_wireCenterCancel.click();
+		boolean flag1 = devcreatepage.btn_wireclli.isDisplayed();
+		Assert.assertTrue("Cancel button functionality is not working",flag1);
+		System.out.println("Cancel button functionality is working fine");
+		devcreatepage.btn_wireclli.click();
+		fillMandatoryFields(actvtnpage, commonData.getContainer(actvtnpage.getClass().getSimpleName()).getContainer("TC39242"));
+		devcreatepage.btn_wireCenterLookUp.click();
+		flag =devcreatepage.btn_wireCenterLookUp.isDisplayed();
+		Assert.assertTrue("look up button functionality is not working",flag);
+		System.out.println("look up button functionallity is working fine");
+		devcreatepage.lnk_addlcn.click();
+		
+	} 
+	
+	@Step
+	public void verfiy_relatedTabPage(String tab) throws Exception {
+		searchdevicepage.verfiy_relatedTabPage(tab);
+	}
 	
 	
+	//---------------------------------------MOHIT---------------------------------------------------------------
+	//TC54963
+	@Step
+	public void verifyTopologyDetailsField(){
+		String actualTDName = actvtnpage.tag_TDName.getText();
+		String actualTDFullName = actvtnpage.tag_TDFullName.getText();
+		String actualTDAlias1 = actvtnpage.tag_TDAlias1.getText();
+		String actualTDTopologyRole = actvtnpage.tag_TDTopologyRole.getText();
+		String actualTDTopologyType = actvtnpage.tag_TDTopologyTechnologyType.getText();
+		String actualTDTopologyNotes = actvtnpage.tag_TDTopologyNotes.getText();
+
+		UserSteps enduser = new UserSteps();
+		
+		IntDataContainer datacontainer = enduser.get_data_for_page(actvtnpage).getContainer("TC55963-TD");
+		String TDName = datacontainer.getFieldValue("tbx_TDName");
+		String TDFullName = datacontainer.getFieldValue("tbx_TDFullName");
+		String TDAlias1 = datacontainer.getFieldValue("tbx_TDAlias1");
+		String TDTopologyRole = datacontainer.getFieldValue("ddl_TDTopologyRole");
+		String TDTopologyType = datacontainer.getFieldValue("ddl_TDTopologyTechnologyType");
+		String TDTopologyNotes = datacontainer.getFieldValue("tbx_TDTopologyNotes");
+		
+		String TDNameField[] = TDName.split(":");
+		String expectedTDName =TDNameField[1];
+		String TDFullNameField[] = TDFullName.split(":");
+		String expectedTDFullName =TDFullNameField[1];
+		String TDAlias1Field[] = TDAlias1.split(":");
+		String expectedTDAlias1 =TDAlias1Field[1];
+		String TDTopologyRoleField[] = TDTopologyRole.split(":");
+		String expectedTDTopologyRole =TDTopologyRoleField[1];
+		String TDTopologyTypeField[] = TDTopologyType.split(":");
+		String expectedTDTopologyType =TDTopologyTypeField[1];
+		String TDTopologyNotesField[] = TDTopologyNotes.split(":");
+		String expectedTDTopologyNotes =TDTopologyNotesField[1];
+		
+		Boolean	flag = expectedTDName.contains(actualTDName);
+		Assert.assertTrue(flag);
+		flag =expectedTDFullName.contains(actualTDFullName);
+		Assert.assertTrue(flag);
+		flag =expectedTDAlias1.contains(actualTDAlias1);
+		Assert.assertTrue(flag);
+		flag =expectedTDTopologyRole.contains(actualTDTopologyRole);
+		Assert.assertTrue(flag);
+		flag =expectedTDTopologyType.contains(actualTDTopologyType);
+		Assert.assertTrue(flag);
+		flag =expectedTDTopologyNotes.contains(actualTDTopologyNotes);
+		Assert.assertTrue(flag);
+	}
+	
+	@Step
+	public void edit_Button_TopologyDetailPage(String button) throws InterruptedException {
+		devicelookuppage.click_EditbtnForTopology(button);
+	}
+	
+	
+	//TC54965
+		public void verifySearchSection(String value){
+			Select select  = new Select(actvtnpage.ddl_searchType);
+			String actualSearchType = select.getFirstSelectedOption().getText();
+			UserSteps enduser = new UserSteps();
+			IntDataContainer datacontainer = enduser.get_data_for_page(actvtnpage).getContainer("TC54965-Search");
+			String serviceType = datacontainer.getFieldValue("ddl_searchType");
+			String serviceTypeField[] = serviceType.split(":");
+			String expectedserviceType =serviceTypeField[1];
+			Boolean	flag = expectedserviceType.contains(actualSearchType);
+			Assert.assertTrue(flag);
+		}
+	
+		
+		public void verifyInventorySection(String value){
+			Select select  = new Select(actvtnpage.ddl_invntryType);
+			String actualInventoryType = select.getFirstSelectedOption().getText();
+			UserSteps enduser = new UserSteps();
+			IntDataContainer datacontainer = enduser.get_data_for_page(actvtnpage).getContainer("TC54965-Search");
+			String InventoryType = datacontainer.getFieldValue("ddl_invntryType");
+			String InventoryTypeField[] = InventoryType.split(":");
+			String expectedInventoryType =InventoryTypeField[1];
+			Boolean	flag = expectedInventoryType.contains(actualInventoryType);
+			Assert.assertTrue(flag);
+		}
+		
+		public void verifyDeviceDetailsTab(){
+			WebDriverWait wait = new WebDriverWait(getDriver(), 180);
+			wait.until(ExpectedConditions.visibilityOf(searchdevicepage.tag_deviceDetails));
+			String deviceCLLI = actvtnpage.tag_deviceCLLIl.getText();
+			String deviceName = actvtnpage.tag_deviceName.getText();
+			Boolean	flag = deviceName.contains(deviceCLLI);
+			Assert.assertTrue(flag);
+		}
+		
+		//--------------------------------------------ANKIT---------------------------------------------------
+		//TC39225
+		public void	verify_Addsubbtn()
+		{
+			shouldExist(ovldp);
+			ovldp.Addsubbtnverify();
+			
+		} 
+		
+		//TC39223
+		@Step
+		public void fill_fieldsatsearchlinkdetails(String field) throws InterruptedException {
+			Thread.sleep(6000);
+			fillMandatoryFields(ovsearchlink,get_data_for_page(ovsearchlink).getContainer(field));
+			} 
+		
+		//TC39223
+		 @Step
+			public void validatiethefield()
+			{
+		    	ovsearchlink.validate();
+				
+				
+			} 
+		 
+		//TC39223
+		 public void filldata(String arg1, String arg2)
+		    {
+		    String cls = arg1.getClass().getSimpleName();
+				IntDataContainer dataContainer = commonData.getContainer(servicedetailspage.getClass().getSimpleName()).getContainer(arg2);
+				fillMandatoryFields(servicedetailspage, dataContainer);
+				JavascriptExecutor jse = (JavascriptExecutor)getDriver();
+				try{
+				jse.executeScript("window.scrollBy(0,250)", "");
+				ovcsdp.btn_save.click();
+				}catch(Exception e){
+				jse.executeScript("arguments[0].click();",  ovcsdp.btn_save);
+				}
+		    } 
+		
+		//TC39223
+		 public void validateservices() throws InterruptedException
+		    {
+			 Thread .sleep(5000);
+			 System.out.println("value = "+servicedetailspage.ver_supportedversion.getText().trim());
+		    Assert.assertEquals(servicedetailspage.ver_supportedversion.getText().trim(), "V6");	
+		    } 
+		 
+		 //-------------------------dolly---------------------------
+			@Step				
+			public void createDeviceRole_Name(String devRole,String devName){
+				actvtnpage.createDeviceRole_Name(devRole,devName);
+			}
+			
+			@Step
+			public void validate_TransportDeviceName(String devName) throws Exception {
+				transportPathPage.validate_TransportDeviceName(devName);
+			}
+			
+			@Step
+			public void selectCircuit(String circuitName) throws Exception {
+		/*		Select select = new Select(transportPathPage.ddl_circuit);
+				select.selectByVisibleText(circuitName);*/
+				transportPathPage.ddl_circuit.selectByVisibleText(circuitName);
+				Thread.sleep(1000);
+			}
+			
+			@Step
+			public void validate_endDeviceName(String devName) throws Exception {
+				transportPathPage.validate_endDeviceName(devName);
+			}
+			
+			@Step
+			public void verifySubmitButtonAndClick() throws Exception {
+				transportPathPage.verifySubmitButtonAndClick();
+			}
+			
+			public void verifyCreateSection(String value){
+				Select select  = new Select(actvtnpage.ddl_createType);
+				String actualSearchType = select.getFirstSelectedOption().getText();
+//				UserSteps enduser = new UserSteps();
+//				IntDataContainer datacontainer = enduser.get_data_for_page(actvtnpage).getContainer("TC54965-Search");
+//				String serviceType = datacontainer.getFieldValue("ddl_searchType");
+//				String serviceTypeField[] = serviceType.split(":");
+//				String expectedserviceType =serviceTypeField[1];
+				
+				Boolean	flag = actualSearchType.contains(value);
+				Assert.assertTrue(flag);
+			}
+			
+			
+			public void verifyInventoryType(String value){
+				Select select  = new Select(actvtnpage.ddl_invntryType);
+				String actualSearchType = select.getFirstSelectedOption().getText();
+//				UserSteps enduser = new UserSteps();
+//				IntDataContainer datacontainer = enduser.get_data_for_page(actvtnpage).getContainer("TC54965-Search");
+//				String serviceType = datacontainer.getFieldValue("ddl_searchType");
+//				String serviceTypeField[] = serviceType.split(":");
+//				String expectedserviceType =serviceTypeField[1];
+				
+				Boolean	flag = actualSearchType.contains(value);
+				Assert.assertTrue(flag);
+			}
+			
+			@Step				
+			public void selectTopologyType_State(String topologyType,String state){
+				actvtnpage.selectTopologyType_State(topologyType,state);
+			}
+			
+			@Step
+			public void fill_TopologyData(String field) throws InterruptedException {
+					fillMandatoryFields(createTopologyPage,get_data_for_page(createTopologyPage).getContainer(field));
+					Thread.sleep(5000);
+				}
+			
+			@Step
+			public void Topologyaction(String action) throws InterruptedException {
+				createTopologyPage.Topologyaction(action);
+			}
+			@Step
+			public void clickAdddevicecircuit(String button) throws InterruptedException{
+				//devcreatepage.tbx_locationClli.clear();
+				createTopologyPage.clickAdddevicecircuit(button);
+				
+			}
+			
+		/*	@Step
+			public void clickAddDevice() throws InterruptedException{
+				//devcreatepage.tbx_locationClli.clear();
+				createTopologyPage.clickAddDevice();
+			}*/ // 10/13/2016	Need to check if the it's impacting other region
+			
+			@Step
+			public void verifyAttributes() throws InterruptedException{
+				//devcreatepage.tbx_locationClli.clear();
+				createTopologyPage.verifyAttributes();
+			}
+			
+			@Step
+			public void searchDevice(String devType , String devSubType) throws InterruptedException{
+				//devcreatepage.tbx_locationClli.clear();
+				createTopologyPage.searchDevice(devType,devSubType);
+			}
+			
+/*			@Step
+			public void validateTopologyDetail(String template){
+			createTopologyPage.validateTopologyDetail(template);
+			
+			}*/
+			
+				public void validateTopologyDetail(String template){
+			try {
+				
+				
+				UserSteps enduser = new UserSteps();
+				
+				
+				String sName = createTopologyPage.lbl_Name.getText();
+				String actualSerialName = sName.trim();
+				System.out.println("actualSerialName= "+actualSerialName);
+				
+				String sFullName = createTopologyPage.lbl_FullName.getText();
+				String actualFullName = sFullName.trim();
+				System.out.println("actualFullName= "+actualFullName);
+				
+				String sTopologyRole = createTopologyPage.lbl_TopologyRole.getText();
+				String actualTopologyRole = sTopologyRole.trim();
+				System.out.println("actualTopologyRole= "+actualTopologyRole);
+				
+				
+				String sTopologyTechType = createTopologyPage.lbl_TopologyTechType.getText();
+				String actualTopologyTechType = sTopologyTechType.trim();
+				System.out.println("actualTopologyTechType= "+actualTopologyTechType);
+				
+				IntDataContainer datacontainer = enduser.get_data_for_page(createTopologyPage).getContainer(template);
+				
+				String fullNamefieldValue1 = datacontainer.getFieldValue("tbx_fullName");
+				String topologyRolefieldValue = datacontainer.getFieldValue("ddl_topologyRole");
+				String topologyTypefieldValue = datacontainer.getFieldValue("ddl_topologyTechType");
+				
+				System.out.println("fullNamefieldValue1 ="+fullNamefieldValue1);
+				System.out.println("topologyRolefieldValue ="+topologyRolefieldValue);
+				System.out.println("topologyTypefieldValue ="+topologyTypefieldValue);
+				
+				String FielsString[] = fullNamefieldValue1.split(":");
+				String expectFullName = FielsString[1];
+				System.out.println("expectFullName= "+expectFullName);
+				
+				
+				String FielsString1[] = topologyRolefieldValue.split(":");
+				String expecttopologyRolefieldValue = FielsString1[1];
+				System.out.println("expecttopologyRolefieldValue= "+expecttopologyRolefieldValue);
+				
+				String FielsString2[] = topologyTypefieldValue.split(":");
+				String expecttopologyTypefieldValue = FielsString2[1];
+				System.out.println("expecttopologyTypefieldValue= "+expecttopologyTypefieldValue);
+				
+				
+				Assert.assertEquals("Topology Full Name is not same", expectFullName, actualFullName);
+//				System.out.println("Serial Name is same");
+				
+				Assert.assertEquals("Topology Role is not same", expecttopologyRolefieldValue, actualTopologyRole);
+//				System.out.println("Vendor Part Name is same");
+				
+				Assert.assertEquals("Topology Technology Type is not same", expecttopologyTypefieldValue, actualTopologyTechType);
+//				System.out.println("Vendor Part Name is same");
+				
+			}
+			 catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+				
+			}
+				
+				//*****************************************************************************************************************//
+				//*****************************************************************************************************************//
+				//***																											***//	
+				//***									MLTO Validation															***//	
+				//***																											***//	
+				//*****************************************************************************************************************//	
+				//*****************************************************************************************************************//
+				
+				
+				
+				@Step
+				public void Validate_attribute_createform(String type){
+					
+					if(type.equals("MLTO")){
+						/*orderpage.createorderattributes();
+					}*/
+				try
+					{	
+						Thread.sleep(5000);
+						ArrayList<String> orderAttributes = new ArrayList<String>();
+
+						orderAttributes.add(0, "Order #*");
+						orderAttributes.add(1, "Customer First Name*");
+						orderAttributes.add(2, "Customer Last Name*");
+						orderAttributes.add(3, "BAN");
+						orderAttributes.add(4, "Customer type*");
+						orderAttributes.add(5, "Customer Subtype*");
+						orderAttributes.add(5, "Account Type*");	
+						orderAttributes.add(5, "Service Address*");	
+						orderAttributes.add(5, "Address Line 2");	
+						orderAttributes.add(5, "Wire Center CLLI*");	
+						orderAttributes.add(5, "Latitude*");	
+						orderAttributes.add(5, "Longitude*");	
+						orderAttributes.add(5, "Remarks");	
+						orderAttributes.add(5, "DTN*");	
+						orderAttributes.add(5, "Reason Code*");	
+						orderAttributes.add(5, "Service Type*");	
+						orderAttributes.add(5, "Down Speed*");	
+						orderAttributes.add(5, "Up Speed*");	
+						orderAttributes.add(5, "Action*");	
+						orderAttributes.add(5, "Test Order*");	
+						orderAttributes.add(5, "Feature Code Collection");	
+						orderAttributes.add(5, "Feature Code Remark");	
+						orderAttributes.add(5, "Appointment Start Date*");	
+						orderAttributes.add(5, "Appointment Start Time*");	
+						orderAttributes.add(5, "Appointment End Date*");	
+						orderAttributes.add(5, "Appointment End Time*");	
+						orderAttributes.add(5, "Requested Due Date*");	
+						orderAttributes.add(5, "Remark");								
+					
+						List<WebElementFacade> Ordercreatelist = devcreatepage.lbl_allXapath;
+						ArrayList<String> OrderatributesOfPage=new ArrayList<String>();
+						System.out.println("Step one done");
+						
+						for(int j=0;j<Ordercreatelist.size();j++){
+							
+							OrderatributesOfPage.add(j, Ordercreatelist.get(j).getText());
+							
+							System.out.println("Step Two done");
+							//System.out.println(atributesOfPage.get(j));
+						}
+						
+						System.out.println(OrderatributesOfPage);
+						
+						if (OrderatributesOfPage.containsAll(orderAttributes)) {
+							System.out.println("pass");
+						} else throw new Error("fail");
+							
+					}
+					catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					}
+				}
+				//*****************************************************************************************************************//
+				//*****************************************************************************************************************//
+				//***																											***//	
+				//***									Sanity Validation Section												***//	
+				//***									10/12/2016																***//	
+				//*****************************************************************************************************************//	
+				//*****************************************************************************************************************//
+				
+				@Step
+				public void Homepagevalidation(){
+					System.out.println("Second stage");
+					ovhomepage.lbl_welcomeomnivue.isVisible();
+				}
+				
+				@Step
+				public void Userloginvalidation(){
+					shouldExist(loginPage);
+				}
+				
+				@Step
+				public void Systemcheckonloginpage(){
+					
+					ArrayList<String> testAttributes = new ArrayList<String>();
+
+					testAttributes.add(0, "OSR is up and running.");
+					testAttributes.add(1, "DSP is up and running.");
+					testAttributes.add(2, "MOB is up and running.");
+					testAttributes.add(3, "ARM is up and running.");
+					testAttributes.add(4, "ICL is up and running.");
+					testAttributes.add(5, "CLC is up and running.");		
+				
+					
+					List<WebElementFacade> HomepageList = ovhomepage.lbl_systemstatus;
+					ArrayList<String> HomepageListOfPage=new ArrayList<String>();
+					System.out.println("Step one done");
+					
+					for(int j=0;j<HomepageList.size();j++){
+						
+						HomepageListOfPage.add(j, HomepageList.get(j).getText());
+						
+						//System.out.println("Step Two done");
+						//System.out.println(atributesOfPage.get(j));
+					}
+					
+					System.out.println(HomepageListOfPage);
+					//for(int i=0;i<acutalList.size();i++){
+				/*	for(int i=0;i<HomepageListOfPage.size();i++){			
+						
+						if(HomepageListOfPage.get(i).equals("OSR is up and running.")){
+							System.out.println(HomepageListOfPage.get(i));
+						}
+						if(HomepageListOfPage.get(i).equals("OSR is up and running.")){
+							System.out.println(HomepageListOfPage.get(i));
+						}
+						
+				}*/
+					if (HomepageListOfPage.containsAll(testAttributes)) {
+						System.out.println("pass");
+					} else throw new Error("fail");
+						}
 }
