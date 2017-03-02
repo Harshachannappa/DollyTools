@@ -84,6 +84,21 @@ public class OVSearchDevicePage extends OmniVuePage {
 	@FindBy(xpath=".//*[@id='left-content-tab']/div/ul/li[2]/a/tab-heading")
 	public WebElementFacade tab_NetworkDetail;
 	
+	
+	@FindBy(xpath="//input[@id='port:LSVGNVXU03W-010017.06A184320124102/GE1/LSVGNVXU03W/LSVQNVOHRLD10']")
+	public WebElementFacade btn_plusIconClick;
+	
+	
+	@FindBy(xpath="//input[@value='Swap Card']")
+	public WebElementFacade btn_swapCard;
+	
+	@FindBy(xpath="(//select[@id='deviceRole'])[1]")
+	public WebElementFacade ddl_destnCard;
+	
+	//input[@value='Swap']
+	@FindBy(xpath="//input[@value='Swap']")
+	public WebElementFacade btn_swap;
+	
 	@FindBy(xpath="//input[@value='Edit Device Details']")
 	public WebElementFacade btn_EditDeviceDetailbtn;
 	
@@ -102,6 +117,16 @@ public class OVSearchDevicePage extends OmniVuePage {
 	@FindBy(xpath="//div[@class='device-detail-group'][7]/div[2]/span/label[1]")
 	public WebElementFacade lbl_ServiceDeviceName;
 	
+	
+	
+	
+	
+	@FindBy(xpath="//span[span[label[text()='Start Device Name']]]/following-sibling::span/div/label/a")
+	public WebElementFacade lbl_strtDev_portSectn;
+	
+	@FindBy(xpath="//span[span[label[text()='End Device Name']]]/following-sibling::span/div/label/a")
+	public WebElementFacade lbl_endDev_portSectn;
+	
 	@FindBy(xpath="//input[@value='Save']")
 	public WebElementFacade btn_NDSaveButton;
 	
@@ -117,6 +142,23 @@ public class OVSearchDevicePage extends OmniVuePage {
 	@FindBy(xpath="//a[text()='Device Details']")
 	public WebElementFacade tag_deviceDetails;
 	//end of new updates
+	
+	
+	@FindBy(xpath="//label[text()='CSOF Order Number:']/following-sibling::label[1]")
+	public WebElementFacade lbl_csofOrderNumber; 
+	
+	@FindBy(xpath="//tab-heading[contains(text(),'OrderNotes')]")
+	public WebElementFacade lnk_orderNotes;
+	
+	@FindBy(xpath="//textarea[@ng-model='newOrderNote']")
+	public WebElementFacade tbx_addNotes;
+	
+	@FindBy(xpath="//button[text()='Save Note']")
+	public WebElementFacade btn_saveNotes;
+	
+	@FindBy(xpath="//textarea[@ng-model='orderNoteHistory']")
+	public WebElementFacade tbx_orderNoteHistory;
+	 
 	
 	public static String allsearchXapath="header-label"; // Have to find alternate to findelements
 	
@@ -235,6 +277,51 @@ public class OVSearchDevicePage extends OmniVuePage {
 		tab_NetworkDetail.click();
 	}
 	
+	
+	public void clickedPlusIcon() throws InterruptedException{
+		Thread.sleep(5000);
+		btn_plusIconClick.click();
+	}
+	
+	public void verifyAndClickSwapCardBtn() throws InterruptedException{
+		Thread.sleep(5000);
+		try{
+			
+			Boolean flag = btn_swapCard.isDisplayed();
+			Assert.assertTrue(" Swap Card Button not visible", flag);
+			
+			btn_swapCard.click();
+			Thread.sleep(5000);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	
+	
+	public void verifyAndSelectDestn(String destnCardValue) throws InterruptedException{
+		Thread.sleep(5000);
+		try{
+			
+			ddl_destnCard.selectByVisibleText(destnCardValue);
+			
+			Thread.sleep(5000);
+			String selectedSearchType = ddl_destnCard.getSelectedVisibleTextValue();
+			System.out.println("selectedSearchType = "+selectedSearchType);
+			Boolean flag = selectedSearchType.contains(destnCardValue);
+			System.out.println("flag = "+flag);
+			Assert.assertTrue("Destination card value not present in the dropdown", flag);
+			
+			btn_swap.click();
+			Thread.sleep(5000);
+
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
 	public void click_EditDeviceDetailbtn(String button) throws InterruptedException {
 		if(button.equals("Edit")){
 		btn_EditDeviceDetailbtn.click();
@@ -304,6 +391,34 @@ public class OVSearchDevicePage extends OmniVuePage {
 		System.out.println("device name is same");
 }
 	
+	
+	public void validate_DeviceName_PortSection() throws InterruptedException {
+		try{
+		Thread.sleep(15000);
+		String deviceName = lbl_DeviceName.getText().trim();
+		String startdeviceName = lbl_strtDev_portSectn.getText().trim();
+		String enddeviceName = lbl_endDev_portSectn.getText().trim();
+		System.out.println("deviceName ="+deviceName);
+		System.out.println("startdeviceName ="+startdeviceName);
+		System.out.println("enddeviceName ="+enddeviceName);
+		
+		if(deviceName.equalsIgnoreCase(startdeviceName)){
+			
+			System.out.println("Device Name Present");
+			
+		}
+		else if(deviceName.equalsIgnoreCase(enddeviceName)){
+			
+			System.out.println("Device Name Present");
+			
+		}
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		
+}
+	
 	public void verfiy_relatedTabPage(String Tab) throws InterruptedException{
 		WebDriverWait wait = new WebDriverWait(getDriver(), 180);
 		if(Tab.equals("Tasks")){
@@ -332,6 +447,130 @@ public class OVSearchDevicePage extends OmniVuePage {
 		Thread.sleep(3000);		
 		
 	}
+	@FindBy(xpath="(//span[span[label[text()='Device Name']]])[3]/following-sibling::span/div/label/a")
+	public WebElementFacade lbl_ServiceAreaDeviceName; 
+	@FindBy(xpath="(//span[span[label[text()='Service Area Name']]])[3]/following-sibling::span/div/label")
+	public WebElementFacade lbl_ServiceAreaName; 
+	
+		@FindBy(xpath="(//span[span[label[text()='Subscriber Full Name']]])[3]/following-sibling::span/div/label")
+		public WebElementFacade lbl_SubscriberFullName; 
+		@FindBy(xpath="(//span[span[label[text()='Subscriber ID']]])[3]/following-sibling::span/div/label")
+		public WebElementFacade lbl_SubscriberID;
+		
+		@FindBy(xpath="(//span[span[label[text()='Subscriber Type']]])[3]/following-sibling::span/div/label")
+		public WebElementFacade lbl_CreateSubscriberType;
+		
+		@FindBy(xpath="(//span[span[label[text()='Subscriber Sub-Type']]])[3]/following-sibling::span/div/label")
+		public WebElementFacade lbl_CreateSubscriberSubType; 
 
 	
+	
+	public void validateServiceAreaDetail(String template){
+		try {
+			
+			Thread.sleep(5000);
+			String sdeviceName = lbl_ServiceAreaDeviceName.getText().trim();
+			String sServiceAreaName = lbl_ServiceAreaName.getText().trim();
+			
+			System.out.println("sdeviceName ="+sdeviceName);
+			System.out.println("sServiceAreaName ="+sServiceAreaName);
+			UserSteps enduser = new UserSteps();
+			
+			IntDataContainer datacontainer = enduser.get_data_for_page(devcreatepage).getContainer(template).getContainer("ServiceDeviceNameData");
+			String fieldValue = datacontainer.getFieldValue("tbx_Servicsdevicelookup");
+			
+			
+			datacontainer = enduser.get_data_for_page(devcreatepage).getContainer(template).getContainer("ServiceAreaName");
+			String fieldValue1 = datacontainer.getFieldValue("tbx_CreateServiceAreaName");
+			
+			System.out.println("fieldValue ="+fieldValue);
+			System.out.println("fieldValue1 ="+fieldValue1);
+			
+			String FielsString[] = fieldValue.split(":");
+			String actualServiceDeviceName = FielsString[1];
+			System.out.println("actualServiceDeviceName= "+actualServiceDeviceName);
+			
+			
+			String FielsString1[] = fieldValue1.split(":");
+			String actualServiceAreaName = FielsString1[1];
+			System.out.println("actualServiceAreaName= "+actualServiceAreaName);
+			
+			Boolean flag = sdeviceName.equalsIgnoreCase(actualServiceDeviceName);
+			Assert.assertTrue("Service Device Name is not same", flag);
+//			Assert.assertEquals("Subscriber Type is not same", sSubscriberType, actualSubscriberTypeFieldvalue);
+			System.out.println("Service Device Name is same");
+			
+			
+			Boolean flag1 = sServiceAreaName.equalsIgnoreCase(actualServiceAreaName);
+			Assert.assertTrue("Service Area name is not same", flag1);
+//			Assert.assertEquals("Subscriber Name is not same", sSubscriberName, actualSubscriberNameFieldvalue);
+			System.out.println("Service Area name is same");
+			
+		}
+		 catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		} 
+
+	public void validateSubscriberDetail(String template){
+		try {
+			String sSubscriberFullName = lbl_SubscriberFullName.getText().trim();
+			String sSubscriberID = lbl_SubscriberID.getText().trim();
+			String sSubscriberType = lbl_CreateSubscriberType.getText().trim();
+			String sSubscriberSubType = lbl_CreateSubscriberSubType.getText().trim();
+			System.out.println("sSubscriberFullName ="+sSubscriberFullName);
+			System.out.println("sSubscriberID ="+sSubscriberID);
+			System.out.println("sSubscriberType ="+sSubscriberType);
+			System.out.println("sSubscriberSubType ="+sSubscriberSubType);
+			
+			
+			UserSteps enduser = new UserSteps();
+			IntDataContainer datacontainer = enduser.get_data_for_page(devcreatepage).getContainer(template).getContainer("Devicedata");
+			String fieldValueSubsName = datacontainer.getFieldValue("tbx_subcsname");
+			String fieldValueSubsID = datacontainer.getFieldValue("tbx_subscid");
+			String fieldValueSubsSubType = datacontainer.getFieldValue("ddl_subcsubtype");
+			String fieldValueSubsType = datacontainer.getFieldValue("ddl_subctype");
+			System.out.println("fieldValueSubsName ="+fieldValueSubsName);
+			System.out.println("fieldValueSubsID ="+fieldValueSubsID);
+			System.out.println("fieldValueSubsSubType ="+fieldValueSubsSubType);
+			System.out.println("fieldValueSubsType ="+fieldValueSubsType);
+			
+			String FielsString[] = fieldValueSubsName.split(":");
+			String actualSubsNamevalue = FielsString[1];
+			System.out.println("actualSubsNamevalue= "+actualSubsNamevalue);
+			
+			String FielsString1[] = fieldValueSubsID.split(":");
+			String actualSubscriberIDFieldvalue = FielsString1[1];
+			System.out.println("actualSubscriberIDFieldvalue= "+actualSubscriberIDFieldvalue);
+			
+			String FielsString2[] = fieldValueSubsSubType.split(":");
+			String actualSubscriberSubsTypeFieldvalue = FielsString2[1];
+			System.out.println("actualSubscriberSubsTypeFieldvalue= "+actualSubscriberSubsTypeFieldvalue);
+			
+			String FielsString3[] = fieldValueSubsType.split(":");
+			String actualSubscriberTypeFieldvalue = FielsString3[1];
+			System.out.println("actualSubscriberTypeFieldvalue= "+actualSubscriberTypeFieldvalue);
+			
+			Boolean flag = sSubscriberFullName.equalsIgnoreCase(actualSubsNamevalue);
+			Assert.assertTrue("Subscriber Full Name is not same", flag);
+			System.out.println("Subscriber Full Name is same");
+			
+			Boolean flag1 = sSubscriberID.equalsIgnoreCase(actualSubscriberIDFieldvalue);
+			Assert.assertTrue("Subscriber ID is not same", flag1);
+			System.out.println("Subscriber ID is same");
+			
+			Boolean flag2 = sSubscriberSubType.equalsIgnoreCase(actualSubscriberSubsTypeFieldvalue);
+			Assert.assertTrue("Subscriber Sub Type is not same", flag2);
+			System.out.println("Subscriber Sub Type is same");
+			
+			Boolean flag3 = sSubscriberType.equalsIgnoreCase(actualSubscriberTypeFieldvalue);
+			Assert.assertTrue("Subscriber Type is not same", flag3);
+			System.out.println("Subscriber Type is same");
+		}
+		 catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		} 
 }

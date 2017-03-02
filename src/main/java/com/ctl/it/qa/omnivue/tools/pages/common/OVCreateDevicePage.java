@@ -13,6 +13,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import com.ctl.it.qa.omnivue.tools.pages.OmniVuePage;
 import com.ctl.it.qa.omnivue.tools.steps.user.UserSteps;
 
+import junit.framework.Assert;
 import net.serenitybdd.core.pages.WebElementFacade;
 import net.serenitybdd.core.annotations.findby.FindBy;
 import net.serenitybdd.core.pages.WebElementFacade;
@@ -23,6 +24,13 @@ public class OVCreateDevicePage extends OmniVuePage {
 	UserSteps enduser;
 	OVLoginPage loginPage;
 	
+		public String devicename=null; 
+
+	
+		
+	@FindBy(xpath = "//tab-heading[contains(text(),'Create Topology')]")
+	public WebElementFacade tab_createtopology;
+		
 	@FindBy(id="isDiversed")
 	public WebElementFacade ddl_IsDiversed;//2
 		
@@ -103,6 +111,13 @@ public class OVCreateDevicePage extends OmniVuePage {
 	//@FindBy(xpath=".//*[@class='ng-scope']/div[11]/div")
 	public List<WebElementFacade> lbl_allXapath;
 	
+	
+	@FindBy(xpath="//div[@ng-show='associateINVsection']/div/label[1]")//Only selecting the first rom not all the elements
+	//@FindBy(xpath=".//*[@class='ng-scope']/div[11]/div")
+	public List<WebElementFacade> lbl_allXapath_inventory;
+	
+	
+	
 	//@FindBy(xpath=".//*[@id='1']/ng-include/div/div[11]/div/div[2]/div/div[3]/input[3]")  /// Check is it used
 	@FindBy(xpath=".//*[@class='ng-pristine ng-untouched ng-valid' and @value='PASSIVE']")
 	public WebElementFacade rbn_passive;
@@ -124,6 +139,9 @@ public class OVCreateDevicePage extends OmniVuePage {
 	
 	@FindBy(xpath="//div[@class='ng-binding alert alert-success']")
 	public WebElementFacade success_alert;
+	
+	@FindBy(xpath="//div[@class='ng-binding alert alert-danger']")
+	public WebElementFacade alert_message;
 	
 	@FindBy(xpath = ".//*[@id='ConnectorType']")
 	public WebElementFacade ddl_Connector_type;
@@ -227,6 +245,10 @@ public class OVCreateDevicePage extends OmniVuePage {
 	//Logical Port Creation---21/7/2016---Divya-OSIp Regression	
 		@FindBy(xpath=".//*[@ng-switch-when='circuitBuildingClliLookup']/div[1]/span/img")
 		public WebElementFacade btn_devicelookup;				//Divya Logical port paths --- 20-7-2016
+		
+		
+		@FindBy(xpath=".//*[@id='0']/ng-include/div/div[9]/div[4]/div[3]/div[1]/span/img")
+		public WebElementFacade btn_createNumberdevicelookup;
 		
 		@FindBy(xpath=".//*[@id='devicelookup']/div[5]/div[2]/input[1]")
 		public WebElementFacade btn_lookuplogicalfrm;
@@ -366,6 +388,28 @@ public class OVCreateDevicePage extends OmniVuePage {
 		@FindBy(xpath="(//button[text()='Cancel'])[1]")
 		public WebElementFacade btn_wireCenterCancel;
 		
+		  @FindBy(xpath="//label[text()='Object Type']/..//select")
+		  public WebElementFacade ddl_objecttype;
+		  
+		  @FindBy(xpath="//input[@id='NAME']")
+		  public WebElementFacade tbx_Name;
+		  
+		  @FindBy(xpath="//textarea[@id='DESCRIPTION']")
+		  public WebElementFacade tbx_note;
+		
+		  
+		//..............TC55693.............................
+			@FindBy(xpath="(//label[contains(text(),'Device Name')]/..//input)[2]")
+			public WebElementFacade tbx_deviceNamesearch;
+			@FindBy(xpath="//input[@value='Associate Devcies']")
+			public WebElementFacade btn_AssociateDevice;
+			@FindBy(xpath="//input[@value='Search Device']")
+			public WebElementFacade btn_searchDevice;
+			@FindBy(xpath="//input[@value='AddDevice']")
+			public WebElementFacade btn_Adddevice;
+			@FindBy(xpath="//input[@value='Search Device']/../../../../div[4]//table//td[1]")
+			public WebElementFacade cbx_select;
+			
 	@Override
 	public WebElementFacade getUniqueElementInPage() {
 		// TODO Auto-generated method stub
@@ -587,6 +631,22 @@ public class OVCreateDevicePage extends OmniVuePage {
 		return msg;
 		}
 	
+	
+	public void create_alert_msg() {
+		try{
+		String message=alert_message.getText();
+		String msg = message.substring(1, message.length());
+		if(msg.contains("Select at-least one Preferred method of contact")){
+			System.out.println("Message in the screen is : "+msg);
+		}
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		}
+	
+	
+	
 	public void clickcreate(){
 		btn_Create.click();
 	}
@@ -727,6 +787,88 @@ public class OVCreateDevicePage extends OmniVuePage {
 	//-------------------------------------ANKIT-------------------------------------------------------
 		@FindBy(xpath=".//*[@id='IS_DIVERSE']")
 		public WebElementFacade ddl_IsDiversedForNPE;
+		
+		//TC55696
+		
+		@FindBy(id="logicalPortName")
+		public WebElementFacade tbx_name;
+		
+		@FindBy(xpath="//label[contains(text(),'Device Name')]/..//input")
+		public WebElementFacade tbx_DeviceName;
+		
+		@FindBy(xpath="//label[contains(text(),'Device Full Name')]/..//input")
+		public  WebElementFacade tbx_DeviceFullName;
+		@FindBy(xpath="//label[contains(text(),'Device Port')]/..//input")
+		public WebElementFacade tbx_DevicePort;
+		@FindBy(xpath="//label[text()='Device Port']/..//span")
+		public WebElementFacade icon_search;
+		@FindBy(xpath="(//select[@id='port'])[2]")
+		public WebElementFacade ddl_portType;
+		
+		@FindBy(xpath="(//input[@value='LookUp' ])[3]")
+		public WebElementFacade btn_logicalPort_Lookup;
+		@FindBy(xpath="(//a[text()='Nov_Reg1_LAG'])[1]")
+		public WebElementFacade link_portname;
 	
-	
+		//TC39194
+		@FindBy(xpath=".//*[@id='deviceLockUp']/img")
+		public WebElementFacade btn_devicelookupForService; 
+		@FindBy(xpath="(//button[text()='Look Up'])[2]")
+		public WebElementFacade btn_Servicelookup; 
+		@FindBy(xpath=".//*[@id='serviceDevice_look_up']/tbody/tr/td[1]/a")
+		public WebElementFacade lnk_serviceDeviceName;
+		
+	// TC39229
+	@FindBy(xpath = "(.//*[@id='deviceLockUp']/img)[1]")
+	public WebElementFacade btn_devicelookupForServiceForSLC;
+	@FindBy(xpath = "(//input[@ng-model='location.addressLine1'])[1]")
+	public WebElementFacade tbx_addressLine1ForSLC;
+	@FindBy(xpath = "(//input[@ng-model='location.addressLine2'])[1]")
+	public WebElementFacade tbx_addressLine2ForSLC;
+	@FindBy(xpath = "(//select[@ng-model='location.state'])[1]")
+	public WebElementFacade ddl_stateForSLC;
+	@FindBy(xpath = "(//select[@ng-model='location.city'])[1]")
+	public WebElementFacade ddl_cityForSLC;
+	@FindBy(xpath = "(//input[@ng-model='location.zip'])[1]")
+	public WebElementFacade tbx_zipForSLC;
+	@FindBy(xpath = "(//input[@ng-click='lookUp()'])[1]")
+	public WebElementFacade btn_lookupForSLC;
+		@FindBy(xpath="(//th[text()='Device Name'])[3]/../../..//tbody[1]//td[2]")
+			public WebElementFacade lbl_DeviceName; 
+
+					
+					
+					
+					public String get_devicename() throws InterruptedException
+					{
+						//waitFor(lbl_DeviceName);
+						Thread.sleep(5000);
+						waitFor(ExpectedConditions.visibilityOf(lbl_DeviceName));
+						 devicename=lbl_DeviceName.getText();
+						System.out.println("device name "+devicename);
+//						tab_createtopology.click();
+						return devicename;
+						
+					}
+
+		
+		/*//TC39191
+		
+		@FindBy(xpath="//div[label[text()='Object']]//img")
+		public WebElementFacade btn_ObjectForNumber;
+		
+		@FindBy(xpath="//div[label[text()='Device Name']]//img")
+		public WebElementFacade btn_DeviceNameForNumber;
+		
+		@FindBy(xpath="//div[label[text()='Device CLLI %']]/input")
+		public WebElementFacade tbx_DeviceLLI;
+		
+		@FindBy(id="port")
+		public WebElementFacade ddl_portTypeForNumber;
+		
+		@FindBy(xpath="//input[@ng-click='servicePortlookUp(field.name)']")
+		public WebElementFacade btn_ObjectlookUpForNumber;
+		
+		@FindBy(xpath=".//*[@id='servicePort_look_up']/tbody/tr[1]/td[1]/a")
+		public WebElementFacade lnk_PortTypeForNumber;*/
 }

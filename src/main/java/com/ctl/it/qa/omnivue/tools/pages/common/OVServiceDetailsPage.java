@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.junit.Assert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -42,6 +43,12 @@ public class OVServiceDetailsPage extends OmniVuePage {
 	
 	@FindBy(xpath=".//div[2]/div/label[3]/img[@ng-click='deletePoolRange(ind)']")
 	public WebElementFacade btn_Ctagdelete;
+	
+	@FindBy(xpath="(//tab-heading/a/img[@src='../images/Grey.png'])[2]")
+	public WebElementFacade tab_viewDetails;
+	
+	@FindBy(xpath="(//tab-heading/a/img[@src='../images/Grey.png'])[1]")
+	public WebElementFacade tab_subscriberSearch;
 		
 	@FindBy(xpath="//a[text()='Logout']")
 	public WebElementFacade lnk_logoutInSettings;
@@ -122,6 +129,11 @@ public class OVServiceDetailsPage extends OmniVuePage {
 	@FindBy(xpath="//h4[text()='Subscriber Lookup']")
 	public WebElementFacade tag_SubscriberLookup;
 	
+	
+	//........cretaed by Ankit.......
+	@FindBy(xpath="//input[@value='Delete']")
+	public WebElementFacade btn_QOS_delete;
+	
 	@Override
 	public WebElementFacade getUniqueElementInPage() {
 		
@@ -176,6 +188,16 @@ public class OVServiceDetailsPage extends OmniVuePage {
 
 	public void click_Ctagdelete() {
 		btn_Ctagdelete.click();
+	}
+	
+	public void closeSearchResult() throws InterruptedException {
+		JavascriptExecutor jse = (JavascriptExecutor)getDriver(); 
+		jse.executeScript("arguments[0].click();",  tab_viewDetails);
+//		tab_viewDetails.click();
+		Thread.sleep(3000);
+//		JavascriptExecutor jse = (JavascriptExecutor)getDriver(); 
+		jse.executeScript("arguments[0].click();",  tab_subscriberSearch);
+//		tab_subscriberSearch.click();
 	}
 	
 	//Validating the Add contact present in location search
@@ -264,6 +286,10 @@ public class OVServiceDetailsPage extends OmniVuePage {
 			}
 			else  if(actionkey.equals("Add Subscribers")){
 				btn_addSubscriber.click();
+			}
+			else if(actionkey.equals("Delete"))
+			{
+				btn_QOS_delete.click();
 			}
 						
 			Thread.sleep(5000);			
@@ -375,6 +401,25 @@ public class OVServiceDetailsPage extends OmniVuePage {
 		
 		@FindBy(xpath="//input[@id='vlan']")
 		public WebElementFacade tbx_vlan;
+		
+		
+		@FindBy(xpath="//input[@value='Add Service']")
+		public WebElementFacade btn_addService;
+		
+		@FindBy(xpath="//input[@value='Service']")
+		public WebElementFacade rdbtn_service;
+		
+		@FindBy(xpath="//input[@ng-model='searchData']")
+		public WebElementFacade tbx_searchService;
+		
+		@FindBy(xpath="//input[@value='Search']")
+		public WebElementFacade btn_search;
+		
+		@FindBy(xpath="//input[@ng-model='serviceSelectData.selected']")
+		public WebElementFacade chkbox_serviceList;
+		
+		@FindBy(xpath="//input[@value='Add Services']")
+		public WebElementFacade btn_AddServicesForServiePopup; 
 		
 		
 }
